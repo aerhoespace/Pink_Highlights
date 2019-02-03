@@ -14,25 +14,25 @@ double sgn(double number){
 }
 
 void setLeftFrontPower (int power){
-    if(power==0) leftFront.stop(vex::brakeType::coast);
+    if(power==0) leftFront.stop(vex::brakeType::brake);
     else{
         leftFront.spin(vex::directionType::fwd,power,vex::velocityUnits::pct);
     }
 }
 void setLeftBackPower (int power){
-    if(power==0) leftBack.stop(vex::brakeType::coast);
+    if(power==0) leftBack.stop(vex::brakeType::brake);
     else{
         leftBack.spin(vex::directionType::fwd,power,vex::velocityUnits::pct);
     }
 }
 void setRightFrontPower (int power){
-    if(power==0) rightFront.stop(vex::brakeType::coast);
+    if(power==0) rightFront.stop(vex::brakeType::brake);
     else{
         rightFront.spin(vex::directionType::fwd,power,vex::velocityUnits::pct);
     }
 }
 void setRightBackPower (int power){
-    if(power==0) rightBack.stop(vex::brakeType::coast);
+    if(power==0) rightBack.stop(vex::brakeType::brake);
     else{
         rightBack.spin(vex::directionType::fwd,power,vex::velocityUnits::pct);
     }
@@ -45,7 +45,7 @@ void setDrivePower (int left, int right){
     setRightBackPower(right);
 }
 
-void autoDrive(int distance, int power = 100){
+void autoDrive(int distance, int power = 60){
     int direction = sgn(distance);
         
     leftFront.resetRotation();
@@ -59,7 +59,7 @@ void autoDrive(int distance, int power = 100){
     setDrivePower(0,0);
 }
 
-void autoTurn(int distance, int power = 100){
+void autoTurn(int distance, int power = 60){
     int direction = sgn(distance);
         
     leftFront.resetRotation();
@@ -68,7 +68,7 @@ void autoTurn(int distance, int power = 100){
     rightBack.resetRotation();
     
     while(std::abs(leftFront.rotation(vex::rotationUnits::deg))<std::abs(distance)){
-        setDrivePower(power*direction, -power*direction);
+        setDrivePower(-power*direction, power*direction);
     }
     setDrivePower(0,0);
 }
@@ -120,19 +120,18 @@ void setPuncherRightPower (int power){
         puncherRight.spin(vex::directionType::fwd,power,vex::velocityUnits::pct);
     }
 }
-
 void setPuncherPower (int left, int right){
     setPuncherLeftPower(left);
     setPuncherRightPower(right);
 }
 
-void autoShoot(int rotations, int power = 100){
+void autoShoot(int rotations = 360, int power = 100){
     int direction = sgn(rotations);
         
     puncherLeft.resetRotation();
     puncherRight.resetRotation();
     
-    while(std::abs(intakeLeft.rotation(vex::rotationUnits::deg))<std::abs(rotations)){
+    while(std::abs(puncherLeft.rotation(vex::rotationUnits::deg))<std::abs(rotations)){
         setPuncherPower(power*direction, power*direction);
     }
     setPuncherPower(0,0);

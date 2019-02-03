@@ -1,5 +1,24 @@
+vex::brain Brain;
+vex::controller Controller1 = vex::controller();
+
+// Drive
+vex::motor leftFront = vex::motor(vex::PORT1,vex::gearSetting::ratio18_1,false);
+vex::motor leftBack = vex::motor(vex::PORT2,vex::gearSetting::ratio18_1,false);
+vex::motor rightFront = vex::motor(vex::PORT9,vex::gearSetting::ratio18_1,true); // True = reversed
+vex::motor rightBack = vex::motor(vex::PORT10,vex::gearSetting::ratio18_1,true);
+// Intake
+vex::motor intakeLeft = vex::motor(vex::PORT3,vex::gearSetting::ratio18_1,false);
+vex::motor intakeRight = vex::motor(vex::PORT4,vex::gearSetting::ratio18_1,true);
+// Puncher
+vex::motor puncherLeft = vex::motor(vex::PORT5,vex::gearSetting::ratio36_1,true);
+vex::motor puncherRight = vex::motor(vex::PORT6,vex::gearSetting::ratio36_1,false);
+
+#include <cmath>
+
 /*---------------------------------------------------------------------------*/
+/*                                                                           */
 /*                           User Control Functions                          */
+/*                                                                           */
 /*---------------------------------------------------------------------------*/
 
 // Drive
