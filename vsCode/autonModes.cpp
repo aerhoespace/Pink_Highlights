@@ -5,64 +5,53 @@
 /*---------------------------------------------------------------------------*/
 
 /*---------------------------------------------------------------------------*/
-/*                             Skills Autonomous                             */
+/*                       11 Point Skills Autonomous                          */
 /*---------------------------------------------------------------------------*/
 
-// Start facing cap on back tile
+void auton11(){
+// Start on back tile (use auton aligner against right side of bot and post holder)
     // Drive forward to hit cap (+1)
-    autoDrive(1100);
+    autoDrive(1200);
     // Intake ball partly
-    autoIn(100);
-    // Drive back to starting position
-    autoDrive(-1000);
+    autoIn(60);
+    // Drive back
+    autoDrive(-1050);
+    vex::task::sleep(20);
+    // Drive back more
+    autoDrive(-130,20);
+    // Forward slightly
+    autoDrive(150,40);
     // Turn left to face flags
-    autoTurn(190);
+    autoTurn(187);
+    vex::task::sleep(200);
     // Drive forward
-    autoDrive(400);
-    // Slight right
-    autoTurn(-5);
+    autoDrive(1370,90);
+    vex::task::sleep(100);
+    // More forward
+    autoDrive(150,25);
+    // Back slightly
+    autoDrive(-10);
     // Shoot top flag (+2)
     autoShoot();
     // Drive forward slightly
-    autoDrive(355);
+    autoDrive(400);
     // Intake ball
     autoIn(400);
     // Shoot middle flag (+2)
     autoShoot();
-    // Slight left to straighten out
-    autoTurn(5);
+    vex::task::sleep(20);
     // Back up
-    autoDrive(-650);
+    autoDrive(-1245);
+    vex::task::sleep(200);
     // Turn right
-    autoTurn (-190);
-    // Drive forward to hit cap (+1)
-    autoDrive(1100);
-    // Intake ball
-    autoIn(400);
-    // Back slightly
-    autoDrive(-75);
-    // Turn left to face flags (under 90)
-    autoTurn(180);
-    // Drive forward
-    autoDrive(100);
-    // Shoot top flag (+2)
-    autoShoot();
-    // Slight left to straighten out
-    autoTurn(10);
+    autoTurn (-280);
+    vex::task::sleep(200);
     // Back up
-    autoDrive(-200);
-    // Turn right
-    autoTurn(-190);
-    // Back up
-    autoDrive(-1000);
-    // Turn right
-    autoTurn(-190);
-    // Drive forward
-    autoDrive(350);
-    // Turn left
-    autoTurn(190);
+    autoDrive(-250,30);
+    vex::task::sleep(200);
     // Drive onto center platform (+6)
-    autoDrive(600,100);
+    autoDrive(3100,100); 
+}
 
 /*---------------------------------------------------------------------------*/
 /*                           Front Red Autonomous                            */
