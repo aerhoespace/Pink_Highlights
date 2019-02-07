@@ -45,7 +45,7 @@ void setDrivePower (int left, int right){
     setRightBackPower(right);
 }
 
-void autoDrive(int distance, int power = 60){
+void autoDrive(int distance, int power = 100){
     int direction = sgn(distance);
         
     leftFront.resetRotation();
@@ -104,18 +104,29 @@ void autoIn(int rotations, int power = 100){
     }
     setIntakePower(0,0);
 }
+void autoYeet(int rotations, int power = 100){
+    int direction = sgn(rotations);
+        
+    intakeLeft.resetRotation();
+    intakeRight.resetRotation();
+    
+    while(std::abs(intakeLeft.rotation(vex::rotationUnits::deg))<std::abs(rotations)){
+        setIntakePower(-power*direction, -power*direction);
+    }
+    setIntakePower(0,0);
+}
 
 /*---------------------------------------------------------------------------*/
 /*                      Autonomous Puncher Functions                         */
 /*---------------------------------------------------------------------------*/
 void setPuncherLeftPower (int power){
-    if(power==0) puncherLeft.stop(vex::brakeType::coast);
+    if(power==0) puncherLeft.stop(vex::brakeType::hold);
     else{
         puncherLeft.spin(vex::directionType::fwd,power,vex::velocityUnits::pct);
     }
 }
 void setPuncherRightPower (int power){
-    if(power==0) puncherRight.stop(vex::brakeType::coast);
+    if(power==0) puncherRight.stop(vex::brakeType::hold);
     else{
         puncherRight.spin(vex::directionType::fwd,power,vex::velocityUnits::pct);
     }
@@ -126,6 +137,17 @@ void setPuncherPower (int left, int right){
 }
 
 void autoShoot(int rotations = 360, int power = 100){
+    int direction = sgn(rotations);
+        
+    puncherLeft.resetRotation();
+    puncherRight.resetRotation();
+    
+    while(std::abs(puncherLeft.rotation(vex::rotationUnits::deg))<std::abs(rotations)){
+        setPuncherPower(power*direction, power*direction);
+    }
+    setPuncherPower(0,0);
+}
+void pullBack(int rotations = 180, int power = 100){
     int direction = sgn(rotations);
         
     puncherLeft.resetRotation();

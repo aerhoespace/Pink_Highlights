@@ -15,6 +15,11 @@ vex::motor puncherRight = vex::motor(vex::PORT6,vex::gearSetting::ratio36_1,fals
 
 #include <cmath>
 
+// Motivational quote
+void littleCeasars(){
+    Controller1.screen.print("lEtS gEt tHiS bReAd");
+}
+
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                           User Control Functions                          */
@@ -52,7 +57,7 @@ void punch(){
         puncherRight.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
     }
     else {
-        puncherLeft.stop(vex::brakeType::brake);
-        puncherRight.stop(vex::brakeType::brake);
+        puncherLeft.stop(vex::brakeType::hold);
+        puncherRight.stop(vex::brakeType::hold);
     }
 }
