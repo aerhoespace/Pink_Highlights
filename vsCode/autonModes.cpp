@@ -5,18 +5,18 @@
 /*---------------------------------------------------------------------------*/
 
 /*---------------------------------------------------------------------------*/
-/*                              11 Point Autonomous                          */
+/*                          11 Point Skills Autonomous                       */
 /*---------------------------------------------------------------------------*/
 void auton11(){ // Perfected
 // Start on back tile (use auton aligner against right side of bot and post holder)
     // Pull puncher back halfway
     pullBack();
     // Drive forward to hit cap (+1)
-    autoDrive(1200);
+    autoDrive(1230);
     // Intake ball partly
-    autoIn(60);
+    autoIn(100);
     // Drive back
-    autoDrive(-1050);
+    autoDrive(-1080);
     vex::task::sleep(20);
     // Drive back more
     autoDrive(-130,20);
@@ -26,23 +26,23 @@ void auton11(){ // Perfected
     autoTurn(187);
     vex::task::sleep(200);
     // Drive forward
-    autoDrive(1370,90);
+    autoDrive(1340,90);
     vex::task::sleep(100);
     // More forward
-    autoDrive(140,25);
+    autoDrive(170,25);
     // Shoot top flag (+2)
     autoShoot();
     // Drive forward slightly
-    autoDrive(420);
+    autoDrive(425);
+    vex::task::sleep(100);
     // Intake ball
     autoIn(400);
+    vex::task::sleep(100);
     // Shoot middle flag (+2)
     autoShoot();
     vex::task::sleep(20);
-    // Drive forward to hit bottom flag (+1)
-    //autoDrive(600);
     // Back up
-    autoDrive(-1265); // Add 600 in case of bottom flag (or whatever distance)
+    autoDrive(-1255);
     vex::task::sleep(200);
     // Turn right
     autoTurn (-280);
@@ -55,75 +55,176 @@ void auton11(){ // Perfected
     // Intake ball
     autoIn(100);
     // Drive onto center platform
-    autoDrive(1100);
+    autoDrive(1060);
 }
 
 /*---------------------------------------------------------------------------*/
-/*                        14 Point Skills Autonomous                         */
+/*                        15 Point Skills Autonomous                         */
 /*---------------------------------------------------------------------------*/
-void auton14(){ // Needs a lot of testing
+void auton15(){ // Needs more testing
 // Start on back tile (use auton aligner against right side of bot and post holder)
+    // Pull puncher back halfway
+    pullBack();
     // Drive forward to hit cap (+1)
-    autoDrive(1200);
+    autoDrive(1230);
     // Intake ball partly
     autoIn(60);
     // Drive back
-    autoDrive(-1205);
+    autoDrive(-1080);
     vex::task::sleep(20);
+    // Drive back more
+    autoDrive(-130,20);
     // Forward slightly
     autoDrive(150,40);
-    vex::task::sleep(20);
     // Turn left to face flags
-    autoTurn(187);
+    autoTurn(186);
     vex::task::sleep(200);
     // Drive forward
-    autoDrive(1500);
+    autoDrive(1325,90);
+    vex::task::sleep(100);
+    // More forward
+    autoDrive(100,25);
     // Shoot top flag (+2)
     autoShoot();
     // Drive forward slightly
-    autoDrive(400);
+    autoDrive(530);
+    vex::task::sleep(10);
     // Intake ball
     autoIn(400);
+    vex::task::sleep(10);
     // Shoot middle flag (+2)
     autoShoot();
     vex::task::sleep(20);
     // Back up
-    autoDrive(-625);
-    vex::task::sleep(20);
-    // Turn right to face cap
-    autoTurn (-280);
-    vex::task::sleep(20);
+    autoDrive(-650);
+    vex::task::sleep(200);
+    // Turn right
+    autoTurn (-285);
+    vex::task::sleep(200);
+    // Back up
+    autoDrive(-250,35);
+    vex::task::sleep(200);
     // Drive forward to hit cap (+1)
     autoDrive(1400);
-    // Intake ball partly
-    autoIn(60);
+    // Intake ball
+    autoIn(200);
     // Back slightly
-    autoDrive(-100);
+    autoDrive(-2);
+    // Intake ball
+    autoIn(500);
     // Turn left to face flags
-    autoTurn(190);
-    // Forward slightly
-    autoDrive(70);
+    autoTurn(160);
+    // Drive forward
+    autoDrive(60);
     // Shoot top flag
     autoShoot();
-    // Back slightly
-    //autoDrive(50);
-    // Turn right
-    autoTurn(-190);
-    // Drive back
-    autoDrive(-1205);
-    vex::task::sleep(20);
+    vex::task::sleep(100);
+    // Turn left to straighten out
+    autoTurn(1,50);
+    // Drive forward to hit bottom flag
+    autoDrive(1300);
+    // Intake ball
+    autoIn(200);
     // Forward slightly
-    autoDrive(150,40);
+    autoDrive(10,30);
+    vex::task::sleep(100);
+    // Drive back
+    autoDrive(-1250);
+    vex::task::sleep(100);
+    // Trun right
+    //autoTurn(-270);
+    //vex::task::sleep(100);
+}
+
+/*---------------------------------------------------------------------------*/
+/*                        21 Point Skills Autonomous                         */
+/*---------------------------------------------------------------------------*/
+void auton21(){ // Incomplete
+    // Start on back tile (use auton aligner against right side of bot and post holder)
+    // Pull puncher back halfway
+    pullBack();
+    // Drive forward to hit cap (+1)
+    autoDrive(1240);
+    // Intake ball partly
+    autoIn(60);
+    // Drive back
+    autoDrive(-1090);
     vex::task::sleep(20);
-    // Turn right
-    autoTurn(-187);
-    // Turn left to face platform
-    autoTurn(187);
+    // Drive back more
+    autoDrive(-110,15);
+    // Forward slightly
+    autoDrive(125,40);
+    vex::task::sleep(200);
+    // Turn left to face flags
+    autoTurn(270,55);
+    vex::task::sleep(200);
+    // Drive forward
+    autoDrive(1300,80);
+    vex::task::sleep(100);
+    // More forward
+    autoDrive(130,25);
+    vex::task::sleep(100);
+    // Right slightly
+    autoTurn(-1);
+    // Shoot top flag (+2)
+    autoShoot();
+    // Drive forward slightly
+    autoDrive(490);
+    vex::task::sleep(100);
+    // Intake ball
+    autoIn(500);
+    vex::task::sleep(100);
+    // Shoot middle flag (+2)
+    autoShoot();
+    vex::task::sleep(20);
+    // Left slightly
+    autoTurn(2,55);
+    vex::task::sleep(500);
+    // Forward slightly
+    autoDrive(200);
+    vex::task::sleep(100);
+    // Right slighty
+    autoTurn(-5);
+    // More forward to hit bottom flag (+1)
+    autoDrive(450,50);
+    // Intake ball
+    autoIn(1000);
+    // Forward to straighten out
+    autoDrive(20,30);
     // Back up
-    autoDrive(-250,30);
-    vex::task::sleep(20);
-    // Drive onto center platform (+6)
-    autoDrive(3100,100);
+    autoDrive(-1300);
+    vex::task::sleep(200);
+    // Turn right
+    autoTurn (-285);
+    vex::task::sleep(200);
+    // Back up
+    autoDrive(-280,35);
+    vex::task::sleep(200);
+    // Drive forward to hit cap (+1)
+    autoDrive(1400);
+    // Intake ball
+    autoIn(200);
+    // Back slightly
+    autoDrive(-2);
+    // Turn left to face flags
+    autoTurn(248);
+    // Drive forward
+    autoDrive(60);
+    // Shoot top flag (+2)
+    autoShoot();
+    // Drive forward
+    autoDrive(450);
+    // Intake ball
+    autoIn(400);
+    vex::task::sleep(100);
+    // Shoot middle flag (+2)
+    autoShoot();
+    // Turn left to straighten out
+    autoTurn(7);
+    // Drive forward to hit bottom flag (+1);
+    autoDrive(525);
+    // Intake ball
+    autoIn(1000);
 }
 
 /*---------------------------------------------------------------------------*/

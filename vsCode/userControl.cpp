@@ -33,6 +33,20 @@ void drive(){
     rightFront.spin(vex::directionType::fwd, Controller1.Axis2.value(), vex::velocityUnits::pct);
     rightBack.spin(vex::directionType::fwd, Controller1.Axis2.value(), vex::velocityUnits::pct);
 }
+void driveLock(){
+    if(Controller1.ButtonX.pressing()){
+        leftFront.stop(vex::brakeType::hold);
+        leftBack.stop(vex::brakeType::hold);
+        rightFront.stop(vex::brakeType::hold);
+        rightBack.stop(vex::brakeType::hold);
+    }
+    else if(Controller1.ButtonY.pressing()){
+        leftFront.stop(vex::brakeType::coast);
+        leftBack.stop(vex::brakeType::coast);
+        rightFront.stop(vex::brakeType::coast);
+        rightBack.stop(vex::brakeType::coast);
+    }
+}
 
 // Intake
 void intake(){
