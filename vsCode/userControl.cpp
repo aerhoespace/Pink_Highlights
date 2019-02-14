@@ -17,7 +17,7 @@ vex::motor puncherRight = vex::motor(vex::PORT6,vex::gearSetting::ratio36_1,fals
 
 // Motivational quote
 void littleCeasars(){
-    Controller1.screen.print("lEtS gEt tHiS bReAd");
+    Controller1.Screen.print("lEtS gEt tHiS bReAd");
 }
 
 /*---------------------------------------------------------------------------*/
@@ -50,12 +50,15 @@ void driveLock(){
 
 // Intake
 void intake(){
-    if(Controller1.ButtonR2.pressing()){
+    if(Controller1.ButtonR2.pressing()){ // Intake ball
         intakeLeft.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
         intakeRight.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
     }
-    else if (Controller1.ButtonL1.pressing()){
+    else if (Controller1.ButtonL1.pressing()){ // Reverse intake
         intakeLeft.spin(vex::directionType::fwd, -100, vex::velocityUnits::pct);
+        intakeRight.spin(vex::directionType::fwd, -100, vex::velocityUnits::pct);
+    }
+    else if (Controller1.Button.L2.pressing()){ // Run reversed bottom roller only
         intakeRight.spin(vex::directionType::fwd, -100, vex::velocityUnits::pct);
     }
     else {
