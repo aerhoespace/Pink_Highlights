@@ -7,8 +7,8 @@
 /*---------------------------------------------------------------------------*/
 /*                          11 Point Skills Autonomous                       */
 /*---------------------------------------------------------------------------*/
-void auton11(){ // Perfected
-// Start on back tile (use auton aligner against right side of bot and post holder)
+void auton11(){ // Old but works
+// Start on back tile
     // Pull puncher back halfway
     pullBack();
     // Drive forward to hit cap (+1)
@@ -59,27 +59,25 @@ void auton11(){ // Perfected
 }
 
 /*---------------------------------------------------------------------------*/
-/*                        21 Point Skills Autonomous                         */
+/*                        22 Point Skills Autonomous                         */
 /*---------------------------------------------------------------------------*/
-void auton21(){
-    // Start coding
-    
+void auton22(){    
     // Back tile
     // Back cap + ball (+1)
     // High + middle flags (first row) (+4)
     // Front cap + ball (+1)
     // Middle flag (second row) (+2)
-    // Front cap + ball (+1)
+    // Cap + Front cap + ball (+1)
     // Back cap + ball (+1)
     // High + middle flags + cap (third row) (+5)
     // Center park (+6)
     
-    // Total score (if perfect) = 21
+    // Total score (if perfect) = 22
 }
 /*---------------------------------------------------------------------------*/
 /*                        6 Point Front Red Autonomous                       */
 /*---------------------------------------------------------------------------*/
-void auton6(){ 
+void auton6(){ // Old
 // Start facing cap
     // Pull puncher back halfway
     pullBack();
@@ -121,7 +119,7 @@ void auton6(){
 /*---------------------------------------------------------------------------*/
 /*                       6 Point Front Blue Autonomous                       */
 /*---------------------------------------------------------------------------*/
-void auton6(){ 
+void auton6(){ // Old
 // Start facing cap
     // Pull puncher back halfway
     pullBack();
@@ -163,7 +161,22 @@ void auton6(){
 /*---------------------------------------------------------------------------*/
 /*                        4 Point Back Red Autonomous                        */
 /*---------------------------------------------------------------------------*/
-void auton4(){ 
+void autonR(){
+    // Back cap + ball (+1)
+    autoIntake(true,true);
+    driveRamp(1100);
+    autoIntake(false,false);
+    // Platform (+3)
+    driveRamp(-40,40);
+    rampTurn(-12);
+    autoDrive(1150,100);
+    autonLock();
+}
+
+/*---------------------------------------------------------------------------*/
+/*                        4 Point Back Red Autonomous                        */
+/*---------------------------------------------------------------------------*/
+void auton4(){ // Old but works
 // Start facing cap
     // Pull puncher back halfway
     pullBack();
@@ -181,7 +194,22 @@ void auton4(){
 /*---------------------------------------------------------------------------*/
 /*                        4 Point Back Blue Autonomous                       */
 /*---------------------------------------------------------------------------*/
-void auton4(){ 
+void autonR(){
+    // Back cap + ball (+1)
+    autoIntake(true,true);
+    driveRamp(1100);
+    autoIntake(false,false);
+    // Platform (+3)
+    driveRamp(-40,40);
+    rampTurn(13);
+    autoDrive(1150,100);
+    autonLock();
+}
+
+/*---------------------------------------------------------------------------*/
+/*                        4 Point Back Blue Autonomous                       */
+/*---------------------------------------------------------------------------*/
+void auton4(){ // Old but works
 // Start facing cap
     // Pull puncher back halfway
     pullBack();
@@ -199,7 +227,7 @@ void auton4(){
 /*---------------------------------------------------------------------------*/
 /*                         9 Point Epic Red Autonomous                       */
 /*---------------------------------------------------------------------------*/
-void auton9(){ 
+void auton9(){ // Old
 // Start facing cap
     // Pull puncher back halfway
     pullBack();
@@ -255,7 +283,7 @@ void auton9(){
 /*---------------------------------------------------------------------------*/
 /*                            Epic Blue Autonomous                           */
 /*---------------------------------------------------------------------------*/
-void auton9(){ 
+void auton9(){ // Old
 // Start facing cap
     // Pull puncher back halfway
     pullBack();

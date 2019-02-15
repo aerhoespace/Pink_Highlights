@@ -45,6 +45,13 @@ void setDrivePower (int left, int right){
     setRightBackPower(right);
 }
 
+void autonLock(){
+    leftFront.stop(vex::brakeType::hold);
+    leftBack.stop(vex::brakeType::hold);
+    rightFront.stop(vex::brakeType::hold);
+    rightBack.stop(vex::brakeType::hold);
+}
+
 void autoDrive(int distance, int power = 100){
     int direction = sgn(distance);
         
@@ -73,13 +80,13 @@ void autoTurn(int distance, int power = 60){
     setDrivePower(0,0);
 }
 
-// Drive ramping
+// Drive with ramping
 bool DriveRampingEnabled;
 
 class Ramping{
     public:
     int ChangePct=1; // The amout of Pct change per loop
-    int ChangeMsec=1; // The amount of time inbetween loops
+    int ChangeMsec=1; // The amount of time in between loops
 
     int RequestedPct=0; // Used to request Pct value change
     int Pct=0; // Pct output
@@ -106,15 +113,15 @@ class Ramping{
             Pct=Pct-ChangePct;
         }
         // Limit Pct
-        if(Pct>MaxPct)  Pct=MaxPct;
-        if(Pct<-MaxPct) Pct=-MaxPct;
+        if(Pct>MaxPct)	Pct=MaxPct;
+        if(Pct<-MaxPct)	Pct=-MaxPct;
         if(Pct>0 && Pct<MinUpPct) Pct=MinUpPct;
         if(Pct<0 && Pct>MinDownPct)    Pct=MinDownPct;
     }
 }; // End of task
 
-Ramping leftRamp(1,6); // First value = pct of pwr change after each interval passed
-Ramping rightRamp(1,6); // Second value = number of Msec between each pct change
+Ramping leftRamp(1,3); // First value = pct of pwr change after each interval passed
+Ramping rightRamp(1,3); // Second value = number of Msec between each pct change
 
     int Drive_Ramping(){
         DriveRampingEnabled=true;
@@ -133,22 +140,22 @@ void SetDRpower(int Lpower,int Rpower){ // DMR
 }
 void DI(int Lpower,int Rpower){
     leftRamp.RequestedPct=Lpower; // Tells ramping to run at inputed power
-    rightRamp.RequestedPct=Rpower; // Use for turning
+    rightRamp.RequestedPct=Rpower; 
     
     leftRamp.Pct=Lpower; // Instantly changes the ramping pct to desired power instead of ramping up
-    rightRamp.Pct=Rpower; // Use for turning
+    rightRamp.Pct=Rpower;
     setDrivePower(leftRamp.Pct,rightRamp.Pct);
 }
 
 // Drive ramping with auto straightening
-void autonDriveRamp(double Distance,int Pct=100,int EndWait=250,int Correction=2){
+void driveRamp(double Distance,int Pct=75,int EndWait=200,int Correction=2){
         // Update ramping speed
         leftRamp.ChangeMsec = 6;
         rightRamp.ChangeMsec = 6;
 
         double Direction=sgn(Distance);
-        int LPower=0;
-        int RPower=0;
+        int Lpower=0;
+        int Rpower=0;
     
         // Clear encoder
         leftFront.resetRotation();
@@ -162,27 +169,47 @@ void autonDriveRamp(double Distance,int Pct=100,int EndWait=250,int Correction=2
             double REncValue=rightBack.rotation(vex::rotationUnits::deg);
             // Straighten
             if(std::abs(LEncValue)>std::abs(REncValue)){
-                LPower=Pct-Correction;
-                RPower=Pct;
+                Lpower=Pct-Correction;
+                Rpower=Pct;
             }
             else if(std::abs(LEncValue)<std::abs(REncValue)){
-                LPower=Pct;
-                RPower=Pct-Correction;
+                Lpower=Pct;
+                Rpower=Pct-Correction;
             }
             else if(std::abs(LEncValue)==std::abs(REncValue)){
-                LPower=Pct;
-                RPower=Pct;
+                Lpower=Pct;
+                Rpower=Pct;
             }
             // Correct direction
-            LPower=LPower*Direction;
-            RPower=RPower*Direction;
+            Lpower=Lpower*Direction;
+            Rpower=Rpower*Direction;
             // Send to SetDRpower
-            SetDRpower(LPower,RPower);
+            SetDRpower(Lpower,Rpower);
             vex::task::sleep(1);
         }
         SetDRpower(0,0);
         vex::task::sleep(EndWait);
     }
+
+void rampTurn(double deg,int LPowerSend=40,int RPowerSend=40,int EndWait=200){ //-left,+right
+        int Dir=sgn(deg);
+        deg=std::abs(deg)/12.56;
+        LPowerSend=LPowerSend*Dir;
+        RPowerSend=RPowerSend*Dir;
+
+        leftFront.resetRotation();
+        leftBack.resetRotation();
+        rightFront.resetRotation();
+        rightBack.resetRotation();
+
+        while((std::abs(leftFront.rotation(vex::rotationUnits::rev))) <std::abs(deg)){
+            DI(LPowerSend,-RPowerSend);
+
+            vex::task::sleep(1);
+        }
+        DI(0,0);
+        vex::task::sleep(EndWait);
+}
 
 /*---------------------------------------------------------------------------*/
 /*                       Autonomous Intake Functions                         */
@@ -230,10 +257,10 @@ void autoIntakeHalf(int rotations, int power = 100){
 void autoIntake(bool ON, bool In){
     if(ON){
         if(In){
-            setIntakePower(-100);
+            setIntakePower(100,100);
         } 
         if(!In){
-            setIntakePower(100);
+            setIntakePower(-100,-100);
         } 
     }
     if(!ON){
