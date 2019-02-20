@@ -59,21 +59,62 @@ void auton11(){ // Old but works
 }
 
 /*---------------------------------------------------------------------------*/
-/*                        22 Point Skills Autonomous                         */
+/*                        20 Point Skills Autonomous                         */
 /*---------------------------------------------------------------------------*/
-void auton22(){    
+void auton20(){
     // Back tile
-    // Back cap + ball (+1)
-    // High + middle flags (first row) (+4)
-    // Front cap + ball (+1)
-    // Middle flag (second row) (+2)
-    // Cap + Front cap + ball (+1)
-    // Back cap + ball (+1)
-    // High + middle flags + cap (third row) (+5)
+    // Back cap + ball (+1) //good
+    pullBack();
+    driveRamp(950,100);
+    autoIn(200);
+    driveRamp(-1185,60,300);
+    vex::task::sleep(200);
+    driveRamp(45,75,75);
+    rampTurn(-7.53);
+    vex::task::sleep(100);
+    // High + middle + bottom flags (first row) (+5) //good
+    driveRamp(1000,100,500);
+    rampTurn(-0.5);
+    autoShoot();
+    driveRamp(240);
+    autoIn(500);
+    rampTurn(-0.5);
+    vex::task::sleep(100);
+    autoShoot();
+    // Front cap + ball (+1) //good
+    driveRamp(-450);
+    rampTurn(9);
+    vex::task::sleep(100);
+    driveRamp(-250,50);
+    driveRamp(950,100);
+    autoIn(600);
+    vex::task::sleep(200);
+    // Top + bottom flag (maybe middle flag) (second row) (+3(5)) //good
+    driveRamp(-15);
+    rampTurn(-9.5);
+    driveRamp(50);
+    autoIn(500);
+    autoShoot();
+    rampTurn(-0.4);
+    autoIntake(true,true);
+    driveRamp(830);
+    // Cap + front cap + ball (+2) //good
+    driveRamp(-300,50);
+    autoIntake(false,false);
+    vex::task::sleep(200);
+    rampTurn(1);
+    autoShoot();
+    // Back cap + ball (maybe) (+1(+3)) //untested
+    driveRamp(-100,50);
+    rampTurn(10);
+    autoIntake(true,false);
+    driveRamp(1100,100);
+    autoIntake(false,false);
+    // High flag (maybe middle + bottom flag) (third row) (+2(5))
     // Center park (+6)
-    
-    // Total score (if perfect) = 22
+    // Total score (if perfect) = 20 (with a small chance of 25)
 }
+
 /*---------------------------------------------------------------------------*/
 /*                        6 Point Front Red Autonomous                       */
 /*---------------------------------------------------------------------------*/

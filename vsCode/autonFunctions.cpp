@@ -1,3 +1,84 @@
+vex::brain Brain;
+vex::controller Controller1 = vex::controller();
+
+// Drive
+vex::motor leftFront = vex::motor(vex::PORT1,vex::gearSetting::ratio18_1,false);
+vex::motor leftBack = vex::motor(vex::PORT2,vex::gearSetting::ratio18_1,false);
+vex::motor rightFront = vex::motor(vex::PORT9,vex::gearSetting::ratio18_1,true); // True = reversed
+vex::motor rightBack = vex::motor(vex::PORT10,vex::gearSetting::ratio18_1,true);
+// Intake
+vex::motor intakeLeft = vex::motor(vex::PORT3,vex::gearSetting::ratio18_1,false);
+vex::motor intakeRight = vex::motor(vex::PORT4,vex::gearSetting::ratio18_1,true);
+// Puncher
+vex::motor puncherLeft = vex::motor(vex::PORT5,vex::gearSetting::ratio36_1,true);
+vex::motor puncherRight = vex::motor(vex::PORT6,vex::gearSetting::ratio36_1,false);
+
+#include <cmath>
+
+// Motivational quote
+void littleCeasars(){
+    Controller1.Screen.print("lEtS gEt tHiS bReAd");
+}
+
+/*---------------------------------------------------------------------------*/
+/*                                                                           */
+/*                           User Control Functions                          */
+/*                                                                           */
+/*---------------------------------------------------------------------------*/
+
+// Drive
+void drive(){
+    leftFront.spin(vex::directionType::fwd, Controller1.Axis3.value(), vex::velocityUnits::pct);
+    leftBack.spin(vex::directionType::fwd, Controller1.Axis3.value(), vex::velocityUnits::pct);
+    rightFront.spin(vex::directionType::fwd, Controller1.Axis2.value(), vex::velocityUnits::pct);
+    rightBack.spin(vex::directionType::fwd, Controller1.Axis2.value(), vex::velocityUnits::pct);
+}
+void driveLock(){
+    if(Controller1.ButtonX.pressing()){
+        leftFront.stop(vex::brakeType::hold);
+        leftBack.stop(vex::brakeType::hold);
+        rightFront.stop(vex::brakeType::hold);
+        rightBack.stop(vex::brakeType::hold);
+    }
+    else if(Controller1.ButtonY.pressing()){
+        leftFront.stop(vex::brakeType::coast);
+        leftBack.stop(vex::brakeType::coast);
+        rightFront.stop(vex::brakeType::coast);
+        rightBack.stop(vex::brakeType::coast);
+    }
+}
+
+// Intake
+void intake(){
+    if(Controller1.ButtonR2.pressing()){ // Intake ball
+        intakeLeft.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+        intakeRight.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+    }
+    else if (Controller1.ButtonL1.pressing()){ // Reverse intake
+        intakeLeft.spin(vex::directionType::fwd, -100, vex::velocityUnits::pct);
+        intakeRight.spin(vex::directionType::fwd, -100, vex::velocityUnits::pct);
+    }
+    else if (Controller1.ButtonL2.pressing()){ // Run reversed bottom roller only
+        intakeRight.spin(vex::directionType::fwd, -100, vex::velocityUnits::pct);
+    }
+    else {
+        intakeLeft.stop(vex::brakeType::coast);
+        intakeRight.stop(vex::brakeType::coast);
+    }
+}
+
+// Puncher
+void punch(){
+    if(Controller1.ButtonR1.pressing()){
+        puncherLeft.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+        puncherRight.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+    }
+    else {
+        puncherLeft.stop(vex::brakeType::hold);
+        puncherRight.stop(vex::brakeType::hold);
+    }
+}
+
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                           Autonomous Functions                            */
@@ -43,13 +124,6 @@ void setDrivePower (int left, int right){
     setLeftBackPower(left);
     setRightFrontPower(right);
     setRightBackPower(right);
-}
-
-void autonLock(){
-    leftFront.stop(vex::brakeType::hold);
-    leftBack.stop(vex::brakeType::hold);
-    rightFront.stop(vex::brakeType::hold);
-    rightBack.stop(vex::brakeType::hold);
 }
 
 void autoDrive(int distance, int power = 100){
@@ -120,8 +194,8 @@ class Ramping{
     }
 }; // End of task
 
-Ramping leftRamp(1,3); // First value = pct of pwr change after each interval passed
-Ramping rightRamp(1,3); // Second value = number of Msec between each pct change
+Ramping leftRamp(1,8); // First value = pct of pwr change after each interval passed
+Ramping rightRamp(1,8); // Second value = number of Msec between each pct change
 
     int Drive_Ramping(){
         DriveRampingEnabled=true;
@@ -148,10 +222,10 @@ void DI(int Lpower,int Rpower){
 }
 
 // Drive ramping with auto straightening
-void driveRamp(double Distance,int Pct=75,int EndWait=200,int Correction=2){
+void driveRamp(double Distance,int Pct=75,int EndWait=200, int Correction=1){
         // Update ramping speed
-        leftRamp.ChangeMsec = 6;
-        rightRamp.ChangeMsec = 6;
+        leftRamp.ChangeMsec = 8;
+        rightRamp.ChangeMsec = 8;
 
         double Direction=sgn(Distance);
         int Lpower=0;
@@ -191,7 +265,7 @@ void driveRamp(double Distance,int Pct=75,int EndWait=200,int Correction=2){
         vex::task::sleep(EndWait);
     }
 
-void rampTurn(double deg,int LPowerSend=40,int RPowerSend=40,int EndWait=200){ //-left,+right
+void rampTurn(double deg,int LPowerSend=40,int RPowerSend=40,int waitTime=200){ //-left,+right
         int Dir=sgn(deg);
         deg=std::abs(deg)/12.56;
         LPowerSend=LPowerSend*Dir;
@@ -208,7 +282,7 @@ void rampTurn(double deg,int LPowerSend=40,int RPowerSend=40,int EndWait=200){ /
             vex::task::sleep(1);
         }
         DI(0,0);
-        vex::task::sleep(EndWait);
+        vex::task::sleep(waitTime);
 }
 
 /*---------------------------------------------------------------------------*/
