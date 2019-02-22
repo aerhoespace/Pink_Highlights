@@ -54,9 +54,8 @@ void intake(){
         intakeLeft.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
         intakeRight.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
     }
-    else if (Controller1.ButtonL1.pressing()){ // Reverse intake
+    else if (Controller1.ButtonL1.pressing()){ // Run reversed top roller only
         intakeLeft.spin(vex::directionType::fwd, -100, vex::velocityUnits::pct);
-        intakeRight.spin(vex::directionType::fwd, -100, vex::velocityUnits::pct);
     }
     else if (Controller1.Button.L2.pressing()){ // Run reversed bottom roller only
         intakeRight.spin(vex::directionType::fwd, -100, vex::velocityUnits::pct);

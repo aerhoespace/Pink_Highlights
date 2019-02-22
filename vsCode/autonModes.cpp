@@ -59,58 +59,104 @@ void auton11(){ // Old but works
 }
 
 /*---------------------------------------------------------------------------*/
-/*                        23 Point Skills Autonomous                         */
+/*                            23 Point Autonomous                            */
 /*---------------------------------------------------------------------------*/
 void auton23(){
 // Back tile
     // Back cap + ball (+1) //good
-    pullBack();
+    /*pullBack();
     driveRamp(950,100);
     autoIn(200);
-    driveRamp(-1185,60,300);
+    driveRamp(-1190,60,300);
     vex::task::sleep(200);
-    driveRamp(45,75,75);
-    rampTurn(-7.53);
+    driveRamp(65,70,70);
+    rampTurn(-7.5);
+    vex::task::sleep(100);
+    driveRamp(-390);
     vex::task::sleep(100);
     // High + middle flags (first row) (+4) //good
-    driveRamp(1000,100,500);
-    rampTurn(-0.5);
+    driveRamp(1520,100,500);
+    rampTurn(1); //keeps straight
     autoShoot();
-    driveRamp(240);
+    driveRamp(220);
     autoIn(500);
     rampTurn(-0.5);
     vex::task::sleep(100);
     autoShoot();
     // Front cap + ball (+1) //good
-    driveRamp(-450);
-    rampTurn(9);
+    driveRamp(-350);
+    rampTurn(9.3);
     vex::task::sleep(100);
     driveRamp(-250,50);
     driveRamp(950,100);
     autoIn(600);
     vex::task::sleep(200);
-    // Top + bottom flag (rarely middle flag) (second row) (+3(5)) //good
-    driveRamp(-15);
-    rampTurn(-9.5);
-    driveRamp(50);
+    // Top + bottom flag (sometimes middle flag) (second row) (+3(5)) //good
+    driveRamp(-30);
+    rampTurn(-10.4);
+    driveRamp(40);
     autoIn(500);
+    vex::task::sleep(200);
     autoShoot();
-    rampTurn(-0.4);
+    rampTurn(-0.75);
     autoIntake(true,true);
-    driveRamp(830);
+    driveRamp(910);
     driveRamp(-300,50);
     autoIntake(false,false);
-    vex::task::sleep(200);
-    rampTurn(1);
+    vex::task::sleep(100);
+    rampTurn(1.37);
     autoShoot();
-    // Cap + front cap + ball (+2) //untested
-    driveRamp(-100,50);
-    rampTurn(10);
+    // Cap + front cap + ball (+2) 
+    driveRamp(-30,50);
+    rampTurn(8.6);
     autoIntake(true,false);
     driveRamp(1100,100);
     autoIntake(false,false);
+    vex::task::sleep(100);
+    driveRamp(-200,50);
+    rampTurn(9.50);
+    driveRamp(400);
+    rampTurn(13);
+    vex::task::sleep(100);
+    driveRamp(200,100);
+    autoIn(200);
+    autoIntake(true,true);
+    driveRamp(-1250,60,300);
+    autoIntake(false,false);
+    vex::task::sleep(100);*/
     // Back cap + ball (+1)
+    driveRamp(60);
+    rampTurn(-8.6);
+    /*driveRamp(1600,100);
+    vex::task::sleep(200);
+    driveRamp(-330);
+    vex::task::sleep(200);*/
+    driveRamp(1100);
+    rampTurn(12);
+    driveRamp(-150);
+    driveRamp(950,100);
+    autoIn(200);
+    driveRamp(-1300,60,300);
+    //vex::task::sleep(200);
     // High + middle + bottom flags (third row) (+5)
+    driveRamp(60);
+    rampTurn(12);
+    //driveRamp(-450);
+    //vex::task::sleep(100);
+    driveRamp(1000);
+    vex::task::sleep(100);
+    rampTurn(-8.18);
+    driveRamp(-200,50);
+    driveRamp(400);
+    rampTurn(13.25);
+    driveRamp(40);
+    autoShoot();
+    autoIntake(true,true);
+    driveRamp(220);
+    autoIntake(false,false);
+    autoShoot();
+    rampTurn(-1);
+    driveRamp(600);
     // Center park (+6)
     // Total score (if perfect) = 23 (with a small chance of 25)
 }
