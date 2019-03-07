@@ -5,14 +5,6 @@
 #define MOTOR_PORT 15 //puncher
 #define MOTOR_PORT 16 //intake
 
-void opDrive(){
-  //simple tank drive controls
-  leftFront.move_velocity(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
-  leftBack.move_velocity(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
-  rightFront.move_velocity(master.get_analog(E_CONTROLLER_ANALOG_RIGHT_Y));
-  rightBack.move_velocity(master.get_analog(E_CONTROLLER_ANALOG_RIGHT_Y));
-}
-
 void opcontrol() {
   //setup controller
   pros::Controller master (E_CONTROLLER_MASTER);
