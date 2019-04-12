@@ -44,7 +44,6 @@ void littleCeasars(){
 
 int verifyLeftJoy(){
   int count=0;
-  bool deadzone=true;
 
   if(-((Controller1.Axis4.value()*Controller1.Axis4.value())/31.75)+31.75>=Controller1.Axis3.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
     count++;
@@ -89,7 +88,6 @@ int verifyLeftJoy(){
 
 int verifyRightJoy(){
   int count=0;
-  bool deadzone=true;
 
   if(-((Controller1.Axis1.value()*Controller1.Axis1.value())/31.75)+31.75>=Controller1.Axis2.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
     count++;
@@ -137,31 +135,77 @@ void tankStrafe(){
   Brain.Screen.clearScreen();
   Brain.Screen.setCursor(1,1);
 
-  if(verifyLeftJoy()==1){
-    LF.spin(vex::directionType::fwd, Controller1.Axis3.value(), vex::velocityUnits::pct);
-    LB.spin(vex::directionType::fwd, Controller1.Axis3.value(), vex::velocityUnits::pct); 
-  }else if(verifyLeftJoy()==2){
-    LF.spin(vex::directionType::fwd, Controller1.Axis4.value()*-1, vex::velocityUnits::pct);
-    LB.spin(vex::directionType::fwd, Controller1.Axis4.value(), vex::velocityUnits::pct);
-    RF.spin(vex::directionType::fwd, Controller1.Axis4.value(), vex::velocityUnits::pct);
-    RB.spin(vex::directionType::fwd, Controller1.Axis4.value()*-1, vex::velocityUnits::pct);    
-  }
+  bool reverseDrive=false;
 
-  if(verifyRightJoy()==1){
-    RF.spin(vex::directionType::fwd, Controller1.Axis2.value(), vex::velocityUnits::pct);
-    RB.spin(vex::directionType::fwd, Controller1.Axis2.value(), vex::velocityUnits::pct);        
-  }else if(verifyRightJoy()==2){
-    LF.spin(vex::directionType::fwd, Controller1.Axis1.value()*-1, vex::velocityUnits::pct);
-    LB.spin(vex::directionType::fwd, Controller1.Axis1.value(), vex::velocityUnits::pct);
-    RF.spin(vex::directionType::fwd, Controller1.Axis1.value(), vex::velocityUnits::pct);
-    RB.spin(vex::directionType::fwd, Controller1.Axis1.value()*-1, vex::velocityUnits::pct);  
-  }
+  if(!reverseDrive)
+    if(verifyLeftJoy()==1){
+      LF.spin(vex::directionType::fwd, Controller1.Axis3.value(), vex::velocityUnits::pct);
+      LB.spin(vex::directionType::fwd, Controller1.Axis3.value(), vex::velocityUnits::pct); 
+    }else if(verifyLeftJoy()==2){
+      LF.spin(vex::directionType::fwd, Controller1.Axis4.value()*1, vex::velocityUnits::pct);
+      LB.spin(vex::directionType::fwd, Controller1.Axis4.value()*-1, vex::velocityUnits::pct);
+      RF.spin(vex::directionType::fwd, Controller1.Axis4.value()*-1, vex::velocityUnits::pct);
+      RB.spin(vex::directionType::fwd, Controller1.Axis4.value()*1, vex::velocityUnits::pct);    
+    }
+
+    if(verifyRightJoy()==1){
+      RF.spin(vex::directionType::fwd, Controller1.Axis2.value(), vex::velocityUnits::pct);
+      RB.spin(vex::directionType::fwd, Controller1.Axis2.value(), vex::velocityUnits::pct);        
+    }else if(verifyRightJoy()==2){
+      LF.spin(vex::directionType::fwd, Controller1.Axis1.value()*1, vex::velocityUnits::pct);
+      LB.spin(vex::directionType::fwd, Controller1.Axis1.value()*-1, vex::velocityUnits::pct);
+      RF.spin(vex::directionType::fwd, Controller1.Axis1.value()*-1, vex::velocityUnits::pct);
+      RB.spin(vex::directionType::fwd, Controller1.Axis1.value()*1, vex::velocityUnits::pct);  
+    }
+    
+    if(verifyRightJoy()==0 and verifyLeftJoy()==0){
+      if(Controller1.ButtonR1.pressing()){
+        LF.stop(vex::brakeType::hold);
+        LB.stop(vex::brakeType::hold);
+        RF.stop(vex::brakeType::hold);
+        RB.stop(vex::brakeType::hold);
+      }else{
+        LF.stop(vex::brakeType::coast);
+        LB.stop(vex::brakeType::coast);
+        RF.stop(vex::brakeType::coast);
+        RB.stop(vex::brakeType::coast);
+      }
+    }
   
-  if(verifyRightJoy()==0 and verifyLeftJoy()==0){
-    LF.stop(vex::brakeType::hold);
-    LB.stop(vex::brakeType::hold);
-    RF.stop(vex::brakeType::hold);
-    RB.stop(vex::brakeType::hold);
+    if(reverseDrive){
+        if(verifyRightJoy()==1){
+        LF.spin(vex::directionType::fwd, Controller1.Axis3.value()*-1, vex::velocityUnits::pct);
+        LB.spin(vex::directionType::fwd, Controller1.Axis3.value()*-1, vex::velocityUnits::pct); 
+      }else if(verifyRightJoy()==2){
+        LF.spin(vex::directionType::fwd, Controller1.Axis4.value()*-1, vex::velocityUnits::pct);
+        LB.spin(vex::directionType::fwd, Controller1.Axis4.value()*1, vex::velocityUnits::pct);
+        RF.spin(vex::directionType::fwd, Controller1.Axis4.value()*1, vex::velocityUnits::pct);
+        RB.spin(vex::directionType::fwd, Controller1.Axis4.value()*-1, vex::velocityUnits::pct);    
+      }
+
+      if(verifyLeftJoy()==1){
+        RF.spin(vex::directionType::fwd, Controller1.Axis2.value()*-1, vex::velocityUnits::pct);
+        RB.spin(vex::directionType::fwd, Controller1.Axis2.value()*-1, vex::velocityUnits::pct);        
+      }else if(verifyLeftJoy()==2){
+        LF.spin(vex::directionType::fwd, Controller1.Axis1.value()*-1, vex::velocityUnits::pct);
+        LB.spin(vex::directionType::fwd, Controller1.Axis1.value()*1, vex::velocityUnits::pct);
+        RF.spin(vex::directionType::fwd, Controller1.Axis1.value()*1, vex::velocityUnits::pct);
+        RB.spin(vex::directionType::fwd, Controller1.Axis1.value()*-1, vex::velocityUnits::pct);  
+      }
+      
+      if(verifyRightJoy()==0 and verifyLeftJoy()==0){
+        if(Controller1.ButtonR1.pressing()){
+          LF.stop(vex::brakeType::hold);
+          LB.stop(vex::brakeType::hold);
+          RF.stop(vex::brakeType::hold);
+          RB.stop(vex::brakeType::hold);
+        }else{
+          LF.stop(vex::brakeType::coast);
+          LB.stop(vex::brakeType::coast);
+          RF.stop(vex::brakeType::coast);
+          RB.stop(vex::brakeType::coast);
+        }
+      }
   }
 }
 
