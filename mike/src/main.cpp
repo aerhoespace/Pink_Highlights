@@ -68,6 +68,7 @@ void usercontrol( void ) {
     liftCont();
     puncherCont();
     intakeCont();
+    driveReverseFunc();
  
     vex::task::sleep(20); //Sleep the task for a short amount of time to prevent wasted resources. 
   }

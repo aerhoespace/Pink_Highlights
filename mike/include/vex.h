@@ -31,6 +31,8 @@ vex::motor puncherRight = vex::motor(vex::PORT6,vex::gearSetting::ratio36_1,fals
 //intake
 vex::motor intake = vex::motor(vex::PORT7,vex::gearSetting::ratio18_1,true);
 
+bool reverseDrive=false;
+
 //motivational quote
 void littleCeasars(){
  Controller1.Screen.print("lEtS gEt tHiS bReAd");
@@ -135,8 +137,6 @@ void tankStrafe(){
   Brain.Screen.clearScreen();
   Brain.Screen.setCursor(1,1);
 
-  bool reverseDrive=false;
-
   if(!reverseDrive)
     if(verifyLeftJoy()==1){
       LF.spin(vex::directionType::fwd, Controller1.Axis3.value(), vex::velocityUnits::pct);
@@ -194,17 +194,10 @@ void tankStrafe(){
       }
       
       if(verifyRightJoy()==0 and verifyLeftJoy()==0){
-        if(Controller1.ButtonR1.pressing()){
-          LF.stop(vex::brakeType::hold);
-          LB.stop(vex::brakeType::hold);
-          RF.stop(vex::brakeType::hold);
-          RB.stop(vex::brakeType::hold);
-        }else{
-          LF.stop(vex::brakeType::coast);
-          LB.stop(vex::brakeType::coast);
-          RF.stop(vex::brakeType::coast);
-          RB.stop(vex::brakeType::coast);
-        }
+        LF.stop(vex::brakeType::hold);
+        LB.stop(vex::brakeType::hold);
+        RF.stop(vex::brakeType::hold);
+        RB.stop(vex::brakeType::hold);
       }
   }
 }
@@ -225,6 +218,17 @@ L1-- top left trigger
 L2-- bottom left trigger
 R1-- top right trigger
 R2-- bottom right trigger*/
+//driver reverse func
+void driveReverseFunc(){
+  if(Controller1.ButtonA.pressing()){
+    while(Controller1.ButtonA.pressing()){
+      if(!Controller1.ButtonA.pressing()){
+        break;
+      }
+    }
+    reverseDrive=!reverseDrive;
+  }
+}
 
 //lift
 void liftCont(){
