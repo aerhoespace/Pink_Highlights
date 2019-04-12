@@ -159,46 +159,53 @@ void tankStrafe(){
     }
     
     if(verifyRightJoy()==0 and verifyLeftJoy()==0){
-      if(Controller1.ButtonR1.pressing()){
-        LF.stop(vex::brakeType::hold);
-        LB.stop(vex::brakeType::hold);
-        RF.stop(vex::brakeType::hold);
-        RB.stop(vex::brakeType::hold);
-      }else{
+      if(Controller1.ButtonR2.pressing() or Controller1.ButtonL1.pressing()){
         LF.stop(vex::brakeType::coast);
         LB.stop(vex::brakeType::coast);
         RF.stop(vex::brakeType::coast);
         RB.stop(vex::brakeType::coast);
-      }
-    }
-  
-    if(reverseDrive){
-        if(verifyRightJoy()==1){
-        LF.spin(vex::directionType::fwd, Controller1.Axis3.value()*-1, vex::velocityUnits::pct);
-        LB.spin(vex::directionType::fwd, Controller1.Axis3.value()*-1, vex::velocityUnits::pct); 
-      }else if(verifyRightJoy()==2){
-        LF.spin(vex::directionType::fwd, Controller1.Axis4.value()*-1, vex::velocityUnits::pct);
-        LB.spin(vex::directionType::fwd, Controller1.Axis4.value()*1, vex::velocityUnits::pct);
-        RF.spin(vex::directionType::fwd, Controller1.Axis4.value()*1, vex::velocityUnits::pct);
-        RB.spin(vex::directionType::fwd, Controller1.Axis4.value()*-1, vex::velocityUnits::pct);    
-      }
-
-      if(verifyLeftJoy()==1){
-        RF.spin(vex::directionType::fwd, Controller1.Axis2.value()*-1, vex::velocityUnits::pct);
-        RB.spin(vex::directionType::fwd, Controller1.Axis2.value()*-1, vex::velocityUnits::pct);        
-      }else if(verifyLeftJoy()==2){
-        LF.spin(vex::directionType::fwd, Controller1.Axis1.value()*-1, vex::velocityUnits::pct);
-        LB.spin(vex::directionType::fwd, Controller1.Axis1.value()*1, vex::velocityUnits::pct);
-        RF.spin(vex::directionType::fwd, Controller1.Axis1.value()*1, vex::velocityUnits::pct);
-        RB.spin(vex::directionType::fwd, Controller1.Axis1.value()*-1, vex::velocityUnits::pct);  
-      }
-      
-      if(verifyRightJoy()==0 and verifyLeftJoy()==0){
+      }else{
         LF.stop(vex::brakeType::hold);
         LB.stop(vex::brakeType::hold);
         RF.stop(vex::brakeType::hold);
         RB.stop(vex::brakeType::hold);
       }
+    }
+  
+    if(reverseDrive){
+      if(verifyRightJoy()==1){
+        LF.spin(vex::directionType::fwd, Controller1.Axis2.value()*-1, vex::velocityUnits::pct);
+        LB.spin(vex::directionType::fwd, Controller1.Axis2.value()*-1, vex::velocityUnits::pct); 
+      }else if(verifyRightJoy()==2){
+        LF.spin(vex::directionType::fwd, Controller1.Axis1.value()*-1, vex::velocityUnits::pct);
+        LB.spin(vex::directionType::fwd, Controller1.Axis1.value()*1, vex::velocityUnits::pct);
+        RF.spin(vex::directionType::fwd, Controller1.Axis1.value()*1, vex::velocityUnits::pct);
+        RB.spin(vex::directionType::fwd, Controller1.Axis1.value()*-1, vex::velocityUnits::pct);    
+      }
+
+      if(verifyLeftJoy()==1){
+        RF.spin(vex::directionType::fwd, Controller1.Axis3.value()*-1, vex::velocityUnits::pct);
+        RB.spin(vex::directionType::fwd, Controller1.Axis3.value()*-1, vex::velocityUnits::pct);        
+      }else if(verifyLeftJoy()==2){
+        LF.spin(vex::directionType::fwd, Controller1.Axis4.value()*-1, vex::velocityUnits::pct);
+        LB.spin(vex::directionType::fwd, Controller1.Axis4.value()*1, vex::velocityUnits::pct);
+        RF.spin(vex::directionType::fwd, Controller1.Axis4.value()*1, vex::velocityUnits::pct);
+        RB.spin(vex::directionType::fwd, Controller1.Axis4.value()*-1, vex::velocityUnits::pct);  
+      }
+      
+    if(verifyRightJoy()==0 and verifyLeftJoy()==0){
+      if(Controller1.ButtonR2.pressing() or Controller1.ButtonL1.pressing()){
+        LF.stop(vex::brakeType::coast);
+        LB.stop(vex::brakeType::coast);
+        RF.stop(vex::brakeType::coast);
+        RB.stop(vex::brakeType::coast);
+      }else{
+        LF.stop(vex::brakeType::hold);
+        LB.stop(vex::brakeType::hold);
+        RF.stop(vex::brakeType::hold);
+        RB.stop(vex::brakeType::hold);
+      }
+    }
   }
 }
 
@@ -248,8 +255,7 @@ void puncherCont(){ //if buttonR1, shoot
  if(Controller1.ButtonR1.pressing()){
  puncherLeft.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
  puncherRight.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
- }
- else { //hold in place
+ }else { //hold in place
  puncherLeft.stop(vex::brakeType::hold);
  puncherRight.stop(vex::brakeType::hold);
  }
