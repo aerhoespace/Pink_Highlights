@@ -33,7 +33,8 @@ void pre_auton( void ) {
     puncherLeft.setStopping(vex::brakeType::brake);
     puncherRight.setStopping(vex::brakeType::brake);
     intake.setStopping(vex::brakeType::coast);
-  
+
+
 }
 
 /*---------------------------------------------------------------------------*/
@@ -43,10 +44,22 @@ void pre_auton( void ) {
 /*---------------------------------------------------------------------------*/
 
 void autonomous( void ) {
-  
-  vex::task Ramping (Drive_Ramping); //starts ramping to run in the background
-  frontRedAton();
 
+  RAMP Ramping;
+
+  RampInit(&Ramping);
+
+  LF.resetRotation();
+  LB.resetRotation();
+  RF.resetRotation();
+  RB.resetRotation();
+
+  while(RampCompute(&Ramping, 800, LF.rotation(vex::rotationUnits::deg))!=0){
+    LF.spin(vex::directionType::fwd, RampCompute(&Ramping, 800, LF.rotation(vex::rotationUnits::deg)),vex::velocityUnits::pct);
+    LB.spin(vex::directionType::fwd, RampCompute(&Ramping, 800, LF.rotation(vex::rotationUnits::deg)),vex::velocityUnits::pct);
+    RF.spin(vex::directionType::fwd, RampCompute(&Ramping, 800, LF.rotation(vex::rotationUnits::deg)),vex::velocityUnits::pct);
+    RB.spin(vex::directionType::fwd, RampCompute(&Ramping, 800, LF.rotation(vex::rotationUnits::deg)),vex::velocityUnits::pct);
+  }
 }
 
 /*---------------------------------------------------------------------------*/
@@ -61,8 +74,6 @@ void usercontrol( void ) {
     // This is the main execution loop for the user control program.
     // Each time through the loop your program should update motor + servo 
     // values based on feedback from the joysticks.
-
-    DriveRampingEnabled=false; //turn off ramping for driver control to prevent conflicting drive motor "tasks"
 
     tankStrafe();
     liftCont();

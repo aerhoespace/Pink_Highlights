@@ -33,6 +33,28 @@ vex::motor intake = vex::motor(vex::PORT7,vex::gearSetting::ratio18_1,true);
 
 bool reverseDrive=false;
 
+double ABS(double Var){//use "#include <cmath>" and "std::abs()"instead
+    if(Var<0)  Var=Var*(-1);
+    return Var;
+}
+int SGN(double Var){
+    if(Var>0)       Var=1;
+    else if(Var<0)  Var=-1;
+    else            Var=0;
+    return Var;
+}
+void EndTimeSlice(int EndWait=5){//add posible callback during waiting with while loop via background task
+    vex::task::sleep(EndWait);
+}
+void limit(int& Val,int minVal=-100,int maxVal=100){//add option to not ref var
+    if(Val<minVal) Val=minVal;
+    if(Val>maxVal) Val=maxVal;
+}
+double MAX(double v1, double v2){
+    if(v1>v2)   return v1;
+    else        return v2;
+}
+
 //motivational quote
 void littleCeasars(){
  Controller1.Screen.print("lEtS gEt tHiS bReAd");
@@ -44,48 +66,81 @@ void littleCeasars(){
 /* */
 /*---------------------------------------------------------------------------*/
 
-int verifyLeftJoy(){
+int verifyJoy(bool left = true){
   int count=0;
-
-  if(-((Controller1.Axis4.value()*Controller1.Axis4.value())/31.75)+31.75>=Controller1.Axis3.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
-    count++;
-  }
-
-  if(((Controller1.Axis4.value()*Controller1.Axis4.value())/31.75)-31.75<=Controller1.Axis3.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
-    count++;
-
-  }
-
-  if(-((Controller1.Axis3.value()*Controller1.Axis3.value())/31.75)+31.75>=Controller1.Axis4.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
-    count++;
-  }
-
-  if(((Controller1.Axis3.value()*Controller1.Axis3.value())/31.75)-31.75<=Controller1.Axis4.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
-    count++;
-  }
-
-  Brain.Screen.print("count = ");
-  Brain.Screen.print(count);
-  Brain.Screen.newLine();
-
-  if(count==1){
+  if(left){
     if(-((Controller1.Axis4.value()*Controller1.Axis4.value())/31.75)+31.75>=Controller1.Axis3.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
-      return 1;
-      Brain.Screen.print("Left Quad = Down");
-    }else if(((Controller1.Axis4.value()*Controller1.Axis4.value())/31.75)-31.75<=Controller1.Axis3.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
-      return 1;
-      Brain.Screen.print("Left Quad = Up");
-    }else if(-((Controller1.Axis3.value()*Controller1.Axis3.value())/31.75)+31.75>=Controller1.Axis4.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
-      return 2;
-      Brain.Screen.print("Left Quad = Right");
-    }else if(((Controller1.Axis3.value()*Controller1.Axis3.value())/31.75)-31.75<=Controller1.Axis4.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
-      return 2;
-      Brain.Screen.print("Left Quad = Left");
+      count++;
     }
-  }else{
-    return 0;
-    Brain.Screen.print("Left Quad = Deadzone");
-  }
+
+    if(((Controller1.Axis4.value()*Controller1.Axis4.value())/31.75)-31.75<=Controller1.Axis3.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
+      count++;
+
+    }
+
+    if(-((Controller1.Axis3.value()*Controller1.Axis3.value())/31.75)+31.75>=Controller1.Axis4.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
+      count++;
+    }
+
+    if(((Controller1.Axis3.value()*Controller1.Axis3.value())/31.75)-31.75<=Controller1.Axis4.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
+      count++;
+    }
+
+    if(count==1){
+      if(-((Controller1.Axis4.value()*Controller1.Axis4.value())/31.75)+31.75>=Controller1.Axis3.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
+        return 1;
+        Brain.Screen.print("Left Quad = Down");
+      }else if(((Controller1.Axis4.value()*Controller1.Axis4.value())/31.75)-31.75<=Controller1.Axis3.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
+        return 1;
+        Brain.Screen.print("Left Quad = Up");
+      }else if(-((Controller1.Axis3.value()*Controller1.Axis3.value())/31.75)+31.75>=Controller1.Axis4.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
+        return 2;
+        Brain.Screen.print("Left Quad = Right");
+      }else if(((Controller1.Axis3.value()*Controller1.Axis3.value())/31.75)-31.75<=Controller1.Axis4.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
+        return 2;
+        Brain.Screen.print("Left Quad = Left");
+      }
+    }else{
+      return 0;
+      Brain.Screen.print("Left Quad = Deadzone");
+    }
+  }else if(!left){
+    if(-((Controller1.Axis1.value()*Controller1.Axis1.value())/31.75)+31.75>=Controller1.Axis2.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
+      count++;
+    }
+
+    if(((Controller1.Axis1.value()*Controller1.Axis1.value())/31.75)-31.75<=Controller1.Axis2.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
+      count++;
+
+    }
+
+    if(-((Controller1.Axis2.value()*Controller1.Axis2.value())/31.75)+31.75>=Controller1.Axis1.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
+      count++;
+    }
+
+    if(((Controller1.Axis2.value()*Controller1.Axis2.value())/31.75)-31.75<=Controller1.Axis1.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
+      count++;
+    }
+
+    if(count==1){
+      if(-((Controller1.Axis1.value()*Controller1.Axis1.value())/31.75)+31.75>=Controller1.Axis2.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
+        return 1;
+        Brain.Screen.print("Right Quad = Down");
+      }else if(((Controller1.Axis1.value()*Controller1.Axis1.value())/31.75)-31.75<=Controller1.Axis2.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
+        return 1;
+        Brain.Screen.print("Right Quad = Up");
+      }else if(-((Controller1.Axis2.value()*Controller1.Axis2.value())/31.75)+31.75>=Controller1.Axis1.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
+        return 2;
+        Brain.Screen.print("Right Quad = Right");
+      }else if(((Controller1.Axis2.value()*Controller1.Axis2.value())/31.75)-31.75<=Controller1.Axis1.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
+        return 2;
+        Brain.Screen.print("Right Quad = Left");
+      }
+    }else{
+      return 0;
+      Brain.Screen.print("Right Quad = Deadzone");
+    }
+  }  
 }
 
 int verifyRightJoy(){
@@ -107,10 +162,6 @@ int verifyRightJoy(){
   if(((Controller1.Axis2.value()*Controller1.Axis2.value())/31.75)-31.75<=Controller1.Axis1.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
     count++;
   }
-
-  Brain.Screen.print("count = ");
-  Brain.Screen.print(count);
-  Brain.Screen.newLine();
 
   if(count==1){
     if(-((Controller1.Axis1.value()*Controller1.Axis1.value())/31.75)+31.75>=Controller1.Axis2.value()){  //check out https://www.desmos.com/calculator/p4fucwmiqb
@@ -138,27 +189,27 @@ void tankStrafe(){
   Brain.Screen.setCursor(1,1);
 
   if(!reverseDrive)
-    if(verifyLeftJoy()==1){
+    if(verifyJoy()==1){
       LF.spin(vex::directionType::fwd, Controller1.Axis3.value(), vex::velocityUnits::pct);
       LB.spin(vex::directionType::fwd, Controller1.Axis3.value(), vex::velocityUnits::pct); 
-    }else if(verifyLeftJoy()==2){
+    }else if(verifyJoy()==2){
       LF.spin(vex::directionType::fwd, Controller1.Axis4.value()*1, vex::velocityUnits::pct);
       LB.spin(vex::directionType::fwd, Controller1.Axis4.value()*-1, vex::velocityUnits::pct);
       RF.spin(vex::directionType::fwd, Controller1.Axis4.value()*-1, vex::velocityUnits::pct);
       RB.spin(vex::directionType::fwd, Controller1.Axis4.value()*1, vex::velocityUnits::pct);    
     }
 
-    if(verifyRightJoy()==1){
+    if(verifyJoy(false)==1){
       RF.spin(vex::directionType::fwd, Controller1.Axis2.value(), vex::velocityUnits::pct);
       RB.spin(vex::directionType::fwd, Controller1.Axis2.value(), vex::velocityUnits::pct);        
-    }else if(verifyRightJoy()==2){
+    }else if(verifyJoy(false)==2){
       LF.spin(vex::directionType::fwd, Controller1.Axis1.value()*1, vex::velocityUnits::pct);
       LB.spin(vex::directionType::fwd, Controller1.Axis1.value()*-1, vex::velocityUnits::pct);
       RF.spin(vex::directionType::fwd, Controller1.Axis1.value()*-1, vex::velocityUnits::pct);
       RB.spin(vex::directionType::fwd, Controller1.Axis1.value()*1, vex::velocityUnits::pct);  
     }
     
-    if(verifyRightJoy()==0 and verifyLeftJoy()==0){
+    if(verifyJoy(false)==0 and verifyJoy()==0){
       if(Controller1.ButtonR2.pressing() or Controller1.ButtonL1.pressing()){
         LF.stop(vex::brakeType::coast);
         LB.stop(vex::brakeType::coast);
@@ -173,27 +224,27 @@ void tankStrafe(){
     }
   
     if(reverseDrive){
-      if(verifyRightJoy()==1){
+      if(verifyJoy(false)==1){
         LF.spin(vex::directionType::fwd, Controller1.Axis2.value()*-1, vex::velocityUnits::pct);
         LB.spin(vex::directionType::fwd, Controller1.Axis2.value()*-1, vex::velocityUnits::pct); 
-      }else if(verifyRightJoy()==2){
+      }else if(verifyJoy(false)==2){
         LF.spin(vex::directionType::fwd, Controller1.Axis1.value()*-1, vex::velocityUnits::pct);
         LB.spin(vex::directionType::fwd, Controller1.Axis1.value()*1, vex::velocityUnits::pct);
         RF.spin(vex::directionType::fwd, Controller1.Axis1.value()*1, vex::velocityUnits::pct);
         RB.spin(vex::directionType::fwd, Controller1.Axis1.value()*-1, vex::velocityUnits::pct);    
       }
 
-      if(verifyLeftJoy()==1){
+      if(verifyJoy()==1){
         RF.spin(vex::directionType::fwd, Controller1.Axis3.value()*-1, vex::velocityUnits::pct);
         RB.spin(vex::directionType::fwd, Controller1.Axis3.value()*-1, vex::velocityUnits::pct);        
-      }else if(verifyLeftJoy()==2){
+      }else if(verifyJoy()==2){
         LF.spin(vex::directionType::fwd, Controller1.Axis4.value()*-1, vex::velocityUnits::pct);
         LB.spin(vex::directionType::fwd, Controller1.Axis4.value()*1, vex::velocityUnits::pct);
         RF.spin(vex::directionType::fwd, Controller1.Axis4.value()*1, vex::velocityUnits::pct);
         RB.spin(vex::directionType::fwd, Controller1.Axis4.value()*-1, vex::velocityUnits::pct);  
       }
       
-    if(verifyRightJoy()==0 and verifyLeftJoy()==0){
+    if(verifyJoy(false)==0 and verifyJoy()==0){
       if(Controller1.ButtonR2.pressing() or Controller1.ButtonL1.pressing()){
         LF.stop(vex::brakeType::coast);
         LB.stop(vex::brakeType::coast);
@@ -279,386 +330,81 @@ void intakeCont(){ //if buttonR2, intake
 /* Autonomous Functions */
 /* */
 /*---------------------------------------------------------------------------*/
-//math vars
-double abs(double Var) {
-    if (Var < 0) Var = Var * (-1);
-    return Var;
-  }
-double sgn(double number){
- if (number > 0) number = 1;
- else number = -1;
- return number;
+struct RAMP{
+    public:
+    int ChangePct; // The amout of Pct change per loop
+    int ChangeMsec; // The amount of time in between loops
+
+    int ReqPct = 0; // Used to request Pct value change
+    int NowPct = 0; // Pct output
+    int MinPct; // Used as moveing up StillSpeed
+    int MaxPct; // the max pct value
+
+    int EndWait;
+    int Correction;
+
+    int RampTask;
+    int RampDistance;
+
+}; // End of task
+
+void RampInit(struct RAMP *controller, int ChangePct=1,int ChangeMsec=8,int MaxPct=75,int MinPct=0,int EndWait=200,int Correction=1){
+    // ChangePct,ChangeMsec,MaxPct
+    controller->ChangePct=ChangePct;
+    controller->ChangeMsec=ChangeMsec;
+
+    controller->MaxPct=MaxPct;
+    controller->MinPct=MinPct;
+
+    controller->EndWait=EndWait;
+    controller->Correction=Correction;
 }
 
-//set drive power
-void setLeftFrontPower (int power){
- if(power==0) LF.stop(vex::brakeType::coast);
- else{
- LF.spin(vex::directionType::fwd,power,vex::velocityUnits::pct);
- }
-}
-void setLeftBackPower (int power){
- if(power==0) LB.stop(vex::brakeType::coast);
- else{
- LB.spin(vex::directionType::fwd,power,vex::velocityUnits::pct);
- }
-}
-void setRightFrontPower (int power){
- if(power==0) RF.stop(vex::brakeType::coast);
- else{
- RF.spin(vex::directionType::fwd,power,vex::velocityUnits::pct);
- }
-}
-void setRightBackPower (int power){
- if(power==0) RB.stop(vex::brakeType::coast);
- else{
- RB.spin(vex::directionType::fwd,power,vex::velocityUnits::pct);
- }
-}
-void setMechDrivePower(int LF,int LB,int RF,int RB){
- setLeftFrontPower(LF);
- setLeftBackPower(LB);
- setRightFrontPower(RF);
- setRightBackPower(RB);
- }
- void DriveMechPowerSend(int j1,int j2,int j3=0,int j4=0){//left,right,side1,side2
- int LF=j1;//left
- int RF=j2;//right
- int SD=(j3+j4)/2;//side
+int RampCompute(struct RAMP *controller,double Distance,int Feedback){
 
- setMechDrivePower(//left go apart && right go into when going right
- LF+SD,
- LF-SD,
- RF-SD,
- RF+SD);
- }
- void setDrivePower(int left, int right){
- setLeftFrontPower(left);
- setLeftBackPower(left);
- setRightFrontPower(right);
- setRightBackPower(right);
- }
-//drive with ramping
-bool DriveRampingEnabled;
+    double Direction=SGN(Distance);
+    controller->RampTask = 0;
 
-class Ramping{
- public:
- int ChangePct=1; //the amout of Pct change per loop
- int ChangeMsec=1; //the amount of time in between loops
+    // Is it there yet?
+    if(ABS(Feedback)<ABS(Distance)){
 
- int RequestedPct=0; //used to request Pct value change
- int Pct=0; //Pct output
- int MinUpPct=0; //used as moveing up StillSpeed
- int MinDownPct=0; //used as moving down StillSpeed
- int MaxPct=100; //the max pct value
+        if(Distance>controller->ReqPct){
+            controller->ReqPct=controller->MaxPct;
+            controller->RampTask=0;
+        }else if(controller->NowPct==controller->MaxPct && controller->RampTask==0){
+            controller->RampDistance = Feedback;
+            controller->RampTask=1;
+        }else if(controller->NowPct==controller->MaxPct && controller->RampTask==1){
+            if(Feedback>=(Distance-controller->RampDistance)){
+                controller->ReqPct=controller->MinPct;
+                controller->RampTask=-1;
+            }
+        }
 
- Ramping(); //object specifer
+        if(controller->ReqPct>controller->NowPct){ // Ramp up
+            controller->NowPct+=controller->ChangePct;
+        }else if(controller->ReqPct<controller->NowPct){ // Ramp down
+            controller->NowPct-=controller->ChangePct;
+        }
 
- Ramping(int CP,int CM,int MaxP=100,int MinDP=0,int MinUP=0){
- //ChangePct,ChangeMsec,MaxPct
- ChangePct=CP;
- ChangeMsec=CM;
- MaxPct=MaxP;
- MinUpPct=MinUP;
- MinDownPct=MinDP;
- }
+        // Limit Pct
+        if(controller->NowPct>controller->MaxPct)
+            controller->NowPct=controller->MaxPct;
 
- void TaskRun(){
- if(RequestedPct>Pct){ //ramp up
- Pct=Pct+ChangePct;
- }
- else if(RequestedPct<Pct){ //ramp down
- Pct=Pct-ChangePct;
- }
- //limit Pct
- if(Pct>MaxPct)  Pct=MaxPct;
- if(Pct<-MaxPct) Pct=-MaxPct;
- if(Pct>0 && Pct<MinUpPct) Pct=MinUpPct;
- if(Pct<0 && Pct>MinDownPct) Pct=MinDownPct;
- }
-}; //end of task
+        if(controller->NowPct<-controller->MaxPct)
+            controller->NowPct=-controller->MaxPct;
 
-Ramping LFDR(1,5); //first value = pct of pwr change after each interval passed
-Ramping RFDR(1,5); //second value = number of Msec between each pct change
-Ramping LBDR(1,5); //after every 5 Msec passed, power to motor will be changed by 1 pct
-Ramping RBDR(1,5);
+        if(controller->NowPct>-controller->MinPct && controller->NowPct<controller->MinPct)
+            controller->NowPct=0;
 
- int Drive_Ramping(){
- DriveRampingEnabled=true;
- while(DriveRampingEnabled){
- LFDR.TaskRun();
- RFDR.TaskRun();
- LBDR.TaskRun();
- RBDR.TaskRun();
- setMechDrivePower(LFDR.Pct,LBDR.Pct,RFDR.Pct,RBDR.Pct);
- vex::task::sleep(LFDR.ChangeMsec);
- }
- return 1;
- }
-void SetDRpower(int LFpower,int LBpower,int RFpower,int RBpower){
- LFDR.RequestedPct = LFpower;
- RFDR.RequestedPct = RFpower;
- LBDR.RequestedPct = LBpower;
- RBDR.RequestedPct = RBpower;
-}
-void DI(int Lpower,int Rpower){
- LFDR.RequestedPct=Lpower;
- RFDR.RequestedPct=Rpower;
- LBDR.RequestedPct=Lpower;
- RBDR.RequestedPct=Rpower;
- LFDR.Pct=Lpower;
- RFDR.Pct=Rpower;
- LBDR.Pct=Lpower;
- RBDR.Pct=Rpower;
- setDrivePower(LBDR.Pct,RBDR.Pct);
-}
-//drive ramping with auto straightening
-void driveRamp(double Distance,int Pct=100,int EndWait=200, int Correction=1){
+        vex::task::sleep(controller->ChangeMsec);
 
- //update ramping speed
- LFDR.ChangeMsec = 5;
- RFDR.ChangeMsec = 5;
- LBDR.ChangeMsec = 5;
- RBDR.ChangeMsec = 5;
-
- double Direction=sgn(Distance);
- int LFPowerSend=0;
- int LBPowerSend=0;
- int RFPowerSend=0;
- int RBPowerSend=0;
- 
- //clear encoder
- LF.resetRotation();
- LB.resetRotation();
- RF.resetRotation();
- RB.resetRotation();
- 
- //is it there yet?
- while(abs(LF.rotation(vex::rotationUnits::deg))<abs(Distance)){
- double LEncValue=LF.rotation(vex::rotationUnits::deg);
- double REncValue=RF.rotation(vex::rotationUnits::deg);
- //straighten
- if(abs(LEncValue)>abs(REncValue)){
- LFPowerSend=Pct-Correction;
- LBPowerSend=Pct-Correction;
- RFPowerSend=Pct;
- RBPowerSend=Pct;
- }
- else if(abs(LEncValue)<abs(REncValue)){
- LFPowerSend=Pct;
- LBPowerSend=Pct;
- RFPowerSend=Pct-Correction;
- RBPowerSend=Pct-Correction;
- }
- else if(abs(LEncValue)==abs(REncValue)){
- LFPowerSend=Pct;
- LBPowerSend=Pct;
- RFPowerSend=Pct;
- RBPowerSend=Pct;
- }
- //correct direction
- LFPowerSend=LFPowerSend*Direction;
- LBPowerSend=LBPowerSend*Direction;
- RFPowerSend=RFPowerSend*Direction;
- RBPowerSend=RBPowerSend*Direction;
- //send to SetDRpower
- SetDRpower(LFPowerSend,LBPowerSend,RFPowerSend,RBPowerSend);
- vex::task::sleep(1);
- }
-}
-//aton strafing
-void strafe(double Distance,int Pct=100,int EndWait=500,int Correction=2){
- //update ramping speed
- LFDR.ChangeMsec = 8;
- RFDR.ChangeMsec = 8;
- LBDR.ChangeMsec = 8;
- RBDR.ChangeMsec = 8;
- //calculate direction and set L & R PowerSend
- double Direction=sgn(Distance);
- int LFPowerSend=0;
- int LBPowerSend=0;
- int RFPowerSend=0;
- int RBPowerSend=0;
- //clear enc
- LB.resetRotation();
- RB.resetRotation();
- LF.resetRotation();
- RF.resetRotation();
- //is it there yet?
- while(abs(RB.rotation(vex::rotationUnits::deg))<abs(Distance)){
- double LEncValue=LB.rotation(vex::rotationUnits::deg);
- double REncValue=RB.rotation(vex::rotationUnits::deg);
- //straiten
- if(abs(LEncValue)>abs(REncValue)){
- LFPowerSend=Pct-Correction;
- LBPowerSend=Pct-Correction;
- RFPowerSend=Pct;
- RBPowerSend=Pct;
- }
- else if(abs(LEncValue)<abs(REncValue)){
- LFPowerSend=Pct;
- LBPowerSend=Pct;
- RFPowerSend=Pct-Correction;
- RBPowerSend=Pct-Correction;
- }
- else if(abs(LEncValue)==abs(REncValue)){
- LFPowerSend=Pct;
- LBPowerSend=Pct;
- RFPowerSend=Pct;
- RBPowerSend=Pct;
- }
- //correct direction
- if(Direction == 1){
- LFPowerSend=LFPowerSend;
- LBPowerSend=LBPowerSend*(-1);
- RFPowerSend=RFPowerSend*(-1);
- RBPowerSend=RBPowerSend;
- }
- if(Direction == -1){
- LFPowerSend=LFPowerSend*(-1);
- LBPowerSend=LBPowerSend;
- RFPowerSend=RFPowerSend;
- RBPowerSend=RBPowerSend*(-1);
- }
- //send to SetDRpower
- SetDRpower(LFPowerSend,LBPowerSend,RFPowerSend,RBPowerSend);
- vex::task::sleep(1);
- }
- SetDRpower(0,0,0,0);
- vex::task::sleep(EndWait);
- }
-//aton turning-- no gyro
-void atonTurn(double deg,int LPowerSend=40,int RPowerSend=40,int waitTime=200){ //-left,+right
- int Dir=sgn(deg);
- deg=abs(deg)/12.56;
- LPowerSend=LPowerSend*Dir;
- RPowerSend=RPowerSend*Dir;
-
- LF.resetRotation();
- LB.resetRotation();
- RF.resetRotation();
- RB.resetRotation();
-
- while((abs(LF.rotation(vex::rotationUnits::rev))) <abs(deg)){
- DI(LPowerSend,-RPowerSend);
-
- vex::task::sleep(1);
- }
- DI(0,0);
- vex::task::sleep(waitTime);
-}
-
-//set lift power
-void setLiftMotorPower (int power){
- if(power==0) intake.stop(vex::brakeType::coast);
- else{
- intake.spin(vex::directionType::fwd,power,vex::velocityUnits::pct);
- }
-}
-void setLiftPower (int pow){
- setLiftMotorPower(pow);
-}
-//lift
-void liftUp(int rotations, int power = 100){
- int direction = sgn(rotations);
- 
- intake.resetRotation();
-
- //lift up a certain amount of degrees then hold in place using brakeType::hold
- while(abs(intake.rotation(vex::rotationUnits::deg))<abs(rotations)){
- setLiftPower(power*direction); 
- }
- setLiftPower(0);
-}
-void liftDown(int rotations, int power = -100){
- int direction = sgn(rotations);
- 
- intake.resetRotation();
-
- //set down a certain amount of degrees then hold in place using brakeType::hold
- while(abs(intake.rotation(vex::rotationUnits::deg))<abs(rotations)){
- setLiftPower(power*direction); 
- }
- setLiftPower(0);
-}
-
-//set puncher power
-void setPuncherLeftPower (int power){
- if(power==0) puncherLeft.stop(vex::brakeType::hold);
- else{
- puncherLeft.spin(vex::directionType::fwd,power,vex::velocityUnits::pct);
- }
-}
-void setPuncherRightPower (int power){
- if(power==0) puncherRight.stop(vex::brakeType::hold);
- else{
- puncherRight.spin(vex::directionType::fwd,power,vex::velocityUnits::pct);
- }
-}
-void setPuncherPower (int left, int right){
- setPuncherLeftPower(left);
- setPuncherRightPower(right);
-}
-//puncher
-void shoot(int rotations = 360, int power = 100){
- int direction = sgn(rotations);
- 
- puncherLeft.resetRotation();
- puncherRight.resetRotation();
- 
- //rotate puncher for 360deg and then hold in place using brakeType::hold
- while(abs(puncherLeft.rotation(vex::rotationUnits::deg))<abs(rotations)){
- setPuncherPower(power*direction, power*direction);
- }
- setPuncherPower(0,0);
-}
-void pull(int rotations = 180, int power = 100){
- int direction = sgn(rotations);
- 
- puncherLeft.resetRotation();
- puncherRight.resetRotation();
- 
- //rotate puncher for 180deg and then hold in place using brakeType::hold
- while(abs(puncherLeft.rotation(vex::rotationUnits::deg))<abs(rotations)){
- setPuncherPower(power*direction, power*direction);
- }
- setPuncherPower(0,0);
-}
-
-//set intake power
-void setIntakeMotorPower (int power){
- if(power==0) intake.stop(vex::brakeType::coast);
- else{
- intake.spin(vex::directionType::fwd,power,vex::velocityUnits::pct);
- }
-}
-void setIntakePower (int pow){
- setIntakeMotorPower(pow);
-}
-//intake
-void autoIn(int rotations, int power = 100){
- int direction = sgn(rotations);
- 
- intake.resetRotation();
- 
- //intake for a certain about of degrees then stop using brakeType::coast
- while(abs(intake.rotation(vex::rotationUnits::deg))<abs(rotations)){
- setIntakePower(power*direction);
- }
- setIntakePower(0);
-}
-void autoIntake(bool ON, bool In){
- if(ON){
- if(In){ //(true, true) = intake
- setIntakePower(100);
- } 
- if(!In){ //(true, false) = detake
- setIntakePower(-100);
- } 
- }
- if(!ON){ //(false, true/false) = stop
- intake.stop();
- }
+        if(controller->NowPct!=0)
+            return controller->NowPct;
+    }else{
+        vex::task::sleep(controller->EndWait);
+        return 0;
+    }
 }
 
 /*---------------------------------------------------------------------------*/
@@ -675,12 +421,6 @@ intake- autoIn, autoIntake
 */
 
 //front red
-void frontRedAton(){ 
- pull();
- autoIntake(true,true);
- driveRamp(800);
- autoIntake(false,false);
-}
 
 /*---------------------------------------------------------------------------*/
 /* */
