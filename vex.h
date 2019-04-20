@@ -500,12 +500,10 @@ void LiftMove(int pos, int power=100){
 void AtonLift(int rotations, int power = 100){
   int direction = sgn(rotations);
 
-  lift.resetRotation();
-
     while(abs(lift.rotation(vex::rotationUnits::deg))<abs(rotations)){
       setLiftPower(power*direction);
     }
-    setIntakePower(0);
+    setLiftPower(0);
   }
 
 //puncher
@@ -620,44 +618,54 @@ void wait (int Msec){
   vex::task::sleep(Msec);
 }
 
-void BackBlueTake2(){
-  Pull();
-  AtonLift(-10);
-  AtonDriveRamp(780);
-  AtonIn();
-  AtonDriveRamp(-50,20);
-  AtonTurn(18.5);
-  AtonDriveRamp(-300);
-  AtonDriveRamp(150,50);
-  AtonLift(10);
-  AtonTurn(8.7);
+  void BackRedSniper(){ //needs tuning
+    Pull();
+    AtonLift(-10);
+    AtonDriveRamp(780);
+    AtonIn();
+    AtonDriveRamp(-200,75,500);
+    AtonTurn(-7.25,50,50,500);
+    AtonLift(125);
+    //wait(4000);
+    AtonFire();
+    AtonTake(true,true);
+    AtonLift(350);
+    AtonDriveRamp(-300);
+    AtonTake(false,false);
+    AtonFire();
   }
 
-/*void BackRED(){ //u h h kinda workds
-  Pull();
-  LiftMove(-20);
-  AtonDriveRamp(950);  
-  AtonIn();
-  AtonDriveRamp(-50,20);
-  AtonTurn(-18.85);
-  AtonDriveRamp(-450);
-  LiftMove(50);
-  AtonDriveRamp(150,25);
-  wait(50);
-  LiftMove(250);
-  wait(50);
-  AtonTurn(-8.7);
-  AtonDriveRamp(1000);
-  AtonDriveRamp(100,20);
-  AtonLock();
-  LiftMove(670);
-  AtonDriveRamp(100,20);
-  wait(200);
-  AtonDriveRamp(-50,20);
-  LiftMove(-700);
-  AtonDriveRamp(-50,20);
-  AtonDriveRamp(-600);
-  AtonTurn(-16);
-  AtonDriveRamp(-1200);
-}*/
+  void BackBlueSniper(){ //needs more tuning
+    Pull();
+    AtonLift(-10);
+    AtonDriveRamp(780);
+    AtonIn();
+    AtonDriveRamp(-200,75,500);
+    AtonTurn(7.25,50,50,500);
+    AtonLift(125);
+    //wait(4000);
+    AtonFire();
+    AtonTake(true,true);
+    AtonLift(350);
+    AtonDriveRamp(-300);
+    AtonTake(false,false);
+    AtonFire();
+  }
 
+  void FrontRedFlags(){
+    Pull();
+    AtonLift(-10);
+    AtonDriveRamp(780);
+    AtonIn();
+    AtonDriveRamp(-800);
+    AtonDriveRamp(100,50);
+  }
+
+  void FrontBlueFlags(){
+    Pull();
+    AtonLift(-10);
+    AtonDriveRamp(780);
+    AtonIn();
+    AtonDriveRamp(-800);
+    AtonDriveRamp(100,50);
+  }
