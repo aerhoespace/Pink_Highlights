@@ -47,9 +47,10 @@ void autonomous( void ) {
   vex::task Ramping (Drive_Ramping); //starts ramping to run in the background
   //vex::task AutoInt (Auto_Intaking); //starts auto intake task
   
-  //FrontRED();
-  //BackRED();
-  BackBlueTake2();
+  //BackRedSniper();
+  //BackBlueSniper();
+  FrontRedFlags();
+  FrontBlueFlags();
 
 }
 
