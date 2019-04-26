@@ -33,7 +33,9 @@ void pre_auton( void ) {
     puncherLeft.setStopping(vex::brakeType::brake);
     puncherRight.setStopping(vex::brakeType::brake);
     intake.setStopping(vex::brakeType::coast);
-  
+
+    vex::task Sel (selFun);
+
 }
 
 /*---------------------------------------------------------------------------*/
@@ -46,14 +48,8 @@ void autonomous( void ) {
 
   vex::task Ramping (Drive_Ramping); //starts ramping to run in the background
   //vex::task AutoInt (Auto_Intaking); //starts auto intake task
-  
-  WhatAton();
-  /*FrntRedFlag();
-  FrntRedPrk();
-  FrntBlueFlag();
-  FrntBluePrk();
-  BckRedSniper();
-  BckBlueSniper();*/
+
+  AtonPots();
 
 }
 
@@ -69,6 +65,8 @@ void usercontrol( void ) {
     // This is the main execution loop for the user control program.
     // Each time through the loop your program should update motor + servo 
     // values based on feedback from the joysticks.
+
+    Brain.Screen.clearScreen();
 
     DriveRampingEnabled=false; //turn off ramping for driver control
     //vex::task AutoInt (Auto_Intaking);
@@ -87,12 +85,13 @@ void usercontrol( void ) {
 //
 int main() {
     //Set up callbacks for autonomous and driver control periods.
+
+    //Run the pre-autonomous function. 
+    pre_auton();
+
     Competition.autonomous( autonomous );
     Competition.drivercontrol( usercontrol );
     
-    //Run the pre-autonomous function. 
-    pre_auton();
-       
     //Prevent main from exiting with an infinite loop.                        
     while(1) {
       vex::task::sleep(100);//Sleep the task for a short amount of time to prevent wasted resources.
