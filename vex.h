@@ -605,20 +605,22 @@ void wait (int Msec){
   vex::task::sleep(Msec);
 }
 
-  void FrntRedFlag(){ //tuned -- 4 flag 2 cap
+  void FrntRedFlag(){ //needs slight tuning //Q44
     Pull();
     AtonLift(-10);
     AtonDriveRamp(780);
     AtonIn();
-    AtonDriveRamp(-715);
-    AtonTurn(-17.7);
-    AtonDriveRamp(70,25);
+    AtonDriveRamp(-560);
+    wait(500);
+    AtonTurn(-13.75);
+    AtonDriveRamp(40,25);
     AtonFire();
     AtonTake(true,true);
-    AtonLift(150);
-    wait(70);
+    AtonLift(190);
+    wait(100);
     AtonFire();
-    AtonDriveRamp(800);
+    AtonTurn(-0.5);
+    AtonDriveRamp(900);
     AtonDriveRamp(-400);
     AtonTurn(6.5);
     AtonTake(false,false);
@@ -629,28 +631,30 @@ void wait (int Msec){
     AtonTake(false,false);
   }
 
-  void FrntRedPrk(){ //tuned -- 3 falg 1 cap and park
+  void FrntRedPrk(){ //tuned
     Pull();
     AtonLift(-10);
     AtonDriveRamp(780);
     AtonIn();
-    AtonDriveRamp(-715);
-    AtonTurn(-17.7);
-    AtonDriveRamp(70,25);
+    AtonDriveRamp(-570);
+    wait(500);
+    AtonTurn(-14);
+    AtonDriveRamp(40,25);
     AtonFire();
     AtonTake(true,true);
     AtonLift(150);
     wait(100);
     AtonFire();
-    AtonDriveRamp(800);
-    AtonDriveRamp(-1550);
+    AtonTurn(-0.5);
+    AtonDriveRamp(900);
+    AtonDriveRamp(-1565);
     AtonTake(false,false);    
-    AtonTurn(-18.7);
-    AtonDriveRamp(-1150);
+    AtonTurn(-18.55);
+    AtonDriveRamp(-1100);
     AtonLock();
   }
 
-  void FrntBlueFlag(){ //tuned -- 4 flag 2 cap
+  void FrntBlueFlag(){ //needs tuning
     Pull();
     AtonLift(-10);
     AtonDriveRamp(780);
@@ -674,28 +678,30 @@ void wait (int Msec){
     AtonTake(false,false);
   }
 
-  void FrntBluePrk(){ //tuned -- 3 flag 1 cap and park
+  void FrntBluePrk(){ //needs tuning //Q11
     Pull();
     AtonLift(-10);
-    AtonDriveRamp(800);
+    AtonDriveRamp(780);
     AtonIn();
-    AtonDriveRamp(-760);
-    AtonTurn(12.5);
-    AtonDriveRamp(100,25);
+    AtonDriveRamp(-550);
+    wait(500);
+    AtonTurn(14);
+    AtonDriveRamp(50,25);
     AtonFire();
     AtonTake(true,true);
     AtonLift(150);
-    wait(50);
+    wait(100);
     AtonFire();
-    AtonDriveRamp(800);
-    AtonDriveRamp(-1550);
+    AtonTurn(0.35);
+    AtonDriveRamp(900);
+    AtonDriveRamp(-1565);
     AtonTake(false,false);    
-    AtonTurn(12.5);
-    AtonDriveRamp(-1150);
+    AtonTurn(13);
+    AtonDriveRamp(-1100);
     AtonLock();
   }
 
-  void BckRedSniperPrk(){ //tuned -- snipe 2 flags 1 cap and park
+  void BckRedSniper(){ //needs tuning
     Pull();
     AtonLift(-10);
     AtonDriveRamp(800);
@@ -705,40 +711,75 @@ void wait (int Msec){
     AtonDriveRamp(-221,75,500);
     AtonTurn(-7.5,50,50,500);
     AtonLift(125);
-    wait(1500);
+    wait(8000);
     AtonFire();
     AtonTake(true,true);
     AtonLift(350);
     AtonDriveRamp(-300);
     AtonTake(false,false);
     AtonFire();
+  }
+
+  void BckRedSnipePrk(){ //tuned //P6 //Q147
+    Pull();
+    AtonLift(-10);
+    AtonDriveRamp(800);
+    wait(10);
+    AtonIn();
+    wait(10);
+    AtonDriveRamp(-220,75,500);
+    AtonTurn(-7.5,50,50,500);
+    AtonLift(125);
+    wait(2500);
+    AtonFire();
+    AtonTake(true,true);
+    AtonLift(350);
+    AtonDriveRamp(-320);
+    AtonTake(false,false);
+    AtonFire();
     AtonTurn(24.5);
-    AtonDriveRamp(-920);
+    AtonDriveRamp(-925);
     AtonTurn(11.9);
-    AtonDriveRamp(-1200);
+    AtonDriveRamp(-1400);
     AtonLock();
   }
 
-  void BckBlueSniperPrk(){ //tuned -- snipe 2 flags 1 cap and park
+  void BckBlueSniper(){ //needs tuning
     Pull();
     AtonLift(-10);
     AtonDriveRamp(780);
     AtonIn();
     AtonDriveRamp(-200,75,500);
-    AtonTurn(7.25,50,50,500);
+    AtonTurn(7.4,50,50,500);
     AtonLift(125);
-    wait(1500);
+    wait(8000);
     AtonFire();
     AtonTake(true,true);
     AtonLift(350);
-    AtonDriveRamp(-300);
+    AtonDriveRamp(-320);
+    AtonTake(false,false);
+    AtonFire();
+  }
+
+  void BckBlueSnipePrk(){ //needs tuning
+    Pull();
+    AtonLift(-10);
+    AtonDriveRamp(780);
+    AtonIn();
+    AtonDriveRamp(-200,75,500);
+    AtonTurn(7.4,50,50,500);
+    AtonLift(125);
+    wait(2500);
+    AtonFire();
+    AtonTake(true,true);
+    AtonLift(350);
+    AtonDriveRamp(-320);
     AtonTake(false,false);
     AtonFire();
     AtonTurn(-24.5);
     AtonDriveRamp(-900);
     AtonTurn(-18);
-    AtonDriveRamp(-1200);
-    AtonLock();
+    AtonDriveRamp(-1800);
   }
 
 /*---------------------------------------------------------------------------*/
@@ -768,10 +809,10 @@ void AtonPots(){
     
     else if(SelectValueOne > 40){
         if(SelectValueTwo > 80){
-            BckRedSniperPrk();
+            BckRedSniper();
         }
         else if(SelectValueTwo > 50){
-            //none
+            BckRedSnipePrk();
         }
         else if(SelectValueTwo > 30){
             //none
@@ -782,14 +823,12 @@ void AtonPots(){
     }
     else if(SelectValueOne > 20){
         if(SelectValueTwo > 80){
+            BckBlueSniper();
         }
         else if(SelectValueTwo > 50){
-            FrntBlueFlag();
+            BckBlueSnipePrk();
         }
         else if(SelectValueTwo > 30){
-            FrntBluePrk();
-        }
-        else if(SelectValueTwo >= 0){
             //none
         }
         else if(SelectValueTwo >= 0){
@@ -798,10 +837,10 @@ void AtonPots(){
     }
     else if(SelectValueOne >= 0){
         if(SelectValueTwo > 80){
-            BckBlueSniperPrk();
+            FrntBlueFlag();
         }
         else if(SelectValueTwo > 50){
-            //none
+            FrntBluePrk();
         }
         else if(SelectValueTwo > 30){
             //none
@@ -812,61 +851,70 @@ void AtonPots(){
     }
 }
 
-void AutonUpdater(){
-    int SelectValueOne = AtonSelectOne.value(vex::percentUnits::pct);
-    int SelectValueTwo = AtonSelectTwo.value(vex::percentUnits::pct);
-    Brain.Screen.clearScreen();
+int selFun(){
+    static int SelectValueOne;
+    static int SelectValueTwo;
 
-   if(SelectValueOne > 60){
+    while(true){
+
+    static int SelectValueOneWas = SelectValueOne;
+    static int SelectValueTwoWas = SelectValueTwo;
+
+    SelectValueOne = AtonSelectOne.value(vex::percentUnits::pct);
+    SelectValueTwo = AtonSelectTwo.value(vex::percentUnits::pct);
+
+    if(SelectValueOne!=SelectValueOneWas || SelectValueTwo!=SelectValueTwoWas){
+          Brain.Screen.clearScreen();
+
+    if(SelectValueOne > 60){
       if(SelectValueTwo > 80){
           //FrntRedFlag();
-          Brain.Screen.clearLine(1,vex::color::red);
+          Brain.Screen.clearLine(1, vex::color::red);
           Brain.Screen.clearLine();
-          Brain.Screen.print("FRONT RED - Cap, First Row Flags, One Middle Row Flag, Second Cap");
-
+          Brain.Screen.print("Front Red Flag -- First Cap, First Row Flags, One Middle Row Flag, Second Cap");
       }
         else if(SelectValueTwo > 50){
             //FrntRedPark();
-            Brain.Screen.clearLine(1,vex::color::red);
+            Brain.Screen.clearLine(1, vex::color::red);
             Brain.Screen.clearLine();
-            Brain.Screen.print("FRONT RED - Cap, First Row Flags, Park");
+            Brain.Screen.print("Front Red Park -- First Cap, First Row Flags, Park");
 
         }
         else if(SelectValueTwo > 30){
             //none
-            Brain.Screen.clearLine(1,vex::color::red);
+            Brain.Screen.clearLine(1, vex::color::red);
             Brain.Screen.clearLine();
             Brain.Screen.print("N/A");
         }
         else if(SelectValueTwo >= 0){
             //none
-            Brain.Screen.clearLine(1,vex::color::red);
+            Brain.Screen.clearLine(1, vex::color::red);
             Brain.Screen.clearLine();
             Brain.Screen.print("N/A");
         }
     }
     else if(SelectValueOne > 40){
         if(SelectValueTwo > 80){
-            //BckRedSniperPrk();
-            Brain.Screen.clearLine(1,vex::color::red);
+            //BckRedSniper();
+            Brain.Screen.clearLine(1, vex::color::red);
             Brain.Screen.clearLine();
-            Brain.Screen.print("BACK RED - Cap, Snipe High Flags, Park ");
+            Brain.Screen.print("Back Red Sniper -- First Cap, Snipe High Flags");
         }
         else if(SelectValueTwo > 50){
-            //none
-            Brain.Screen.clearLine(1,vex::color::red);
+            //BckRedSniperPrk();
+            Brain.Screen.clearLine(1, vex::color::red);
             Brain.Screen.clearLine();
-            Brain.Screen.print("N/A");
+            Brain.Screen.print("Back Red Parking Sniper -- First Cap, Snipe High Flags, Park");
         }
         else if(SelectValueTwo > 30){
             //none
-            Brain.Screen.clearLine(1,vex::color::red);
+            Brain.Screen.clearLine(1, vex::color::red);
             Brain.Screen.clearLine();
             Brain.Screen.print("N/A");
         }
         else if(SelectValueTwo >= 0){
             //none
-            Brain.Screen.clearLine(1,vex::color::red);
+            Brain.Screen.clearLine(1, vex::color::red);
             Brain.Screen.clearLine();
             Brain.Screen.print("N/A");
         }
@@ -874,66 +922,57 @@ void AutonUpdater(){
 
     else if(SelectValueOne > 20){
         if(SelectValueTwo > 80){
-            //FrntBlueFlag
-            Brain.Screen.clearLine(1,vex::color::blue);
+            //BckBlueSniper
+            Brain.Screen.clearLine(1, vex::color::blue);
             Brain.Screen.clearLine();
-            Brain.Screen.print("FRONT BLUE - Cap, First Row Flags, One Middle Row Flag, Second Cap");
-            
+            Brain.Screen.print("Back Blue Sniper -- First Cap, Snipe High Flags");
         }
         else if(SelectValueTwo > 50){
-            //FrntBluePrk
-            Brain.Screen.clearLine(1,vex::color::blue);
+            //BackBlueSnipePrk
+            Brain.Screen.clearLine(1, vex::color::blue);
             Brain.Screen.clearLine();
-            Brain.Screen.print("FRONT BLUE - Cap, First Row Flags, Park");
-
+            Brain.Screen.print("Back Blue Parking Sniper -- First Cap, Snipe High Flags");
         }
         else if(SelectValueTwo > 30){
             //none
-            Brain.Screen.clearLine(1,vex::color::blue);
+            Brain.Screen.clearLine(1, vex::color::blue);
             Brain.Screen.clearLine();
             Brain.Screen.print("N/A");
         }
         else if(SelectValueTwo >= 0){
             //none
-            Brain.Screen.clearLine(1,vex::color::blue);
+            Brain.Screen.clearLine(1, vex::color::blue);
             Brain.Screen.clearLine();
             Brain.Screen.print("N/A");
         }
     }
     else if(SelectValueOne >= 0){
         if(SelectValueTwo > 80){
-            //BckBlueSnipePrk
-            Brain.Screen.clearLine(1,vex::color::blue);
+            //FrntBlueFlag
+            Brain.Screen.clearLine(1, vex::color::blue);
             Brain.Screen.clearLine();
-            Brain.Screen.print("BACK BLUE - Cap, Snipe High Flags, Park");
-            
+            Brain.Screen.print("Front Blue Flag -- First Cap, First Row Flags, One Middle Row Flag, Second Cap");
         }
         else if(SelectValueTwo > 50){
-            //none
-            Brain.Screen.clearLine(1,vex::color::blue);
+            //FrntBluePrk
+            Brain.Screen.clearLine(1, vex::color::blue);
             Brain.Screen.clearLine();
-            Brain.Screen.print("N/A");
-
+            Brain.Screen.print("Front Blue Park -- First Cap, First Row Flags, Park");
         }
         else if(SelectValueTwo > 30){
             //none
-            Brain.Screen.clearLine(1,vex::color::blue);
+            Brain.Screen.clearLine(1, vex::color::blue);
             Brain.Screen.clearLine();
             Brain.Screen.print("N/A");
         }
         else if(SelectValueTwo >= 0){
             //none
-            Brain.Screen.clearLine(1,vex::color::blue);
+            Brain.Screen.clearLine(1, vex::color::blue);
             Brain.Screen.clearLine();
             Brain.Screen.print("N/A");
         }
+      }
     }
-}
-int WhatAton(){
-    while(true){
-        AutonUpdater();
-        Brain.Screen.render();
-        vex::task::sleep(20);
-    }
-    return 1;
+    vex::task::sleep(100);
+  }
 }
